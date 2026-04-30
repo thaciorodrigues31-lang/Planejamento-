@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Plano Financeiro — Thácio & Byanca</title>
+  <style>
+    :root {
+      --verde:#1a7a4a;--verde-claro:#27a85f;--verde-bg:#e8f5ee;
+      --vermelho:#c0392b;--vermelho-bg:#fdecea;
+      --amarelo:#b8860b;--amarelo-bg:#fef4e4;
+      --azul:#1a5276;--azul-claro:#2980b9;--azul-bg:#eaf4fb;
+      --cinza:#5d6d7e;--cinza-bg:#f4f6f7;
+      --roxo:#6c3483;--roxo-bg:#f5eeff;
+      --sombra:0 2px 14px rgba(0,0,0,0.08);
+      --radius:12px;--font:'Segoe UI',Arial,sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:var(--font);background:#eef0f3;color:#2c3e50;}
+
+    header{background:linear-gradient(135deg,#0f2744 0%,#1a6640 100%);color:#fff;padding:28px 24px 20px;text-align:center;}
+    header h1{font-size:1.85rem;font-weight:700;letter-spacing:-.5px;}
+    header p{margin-top:5px;opacity:.82;font-size:.93rem;}
+    .badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px;}
+    .badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.28);border-radius:20px;padding:4px 13px;font-size:.78rem;font-weight:600;}
+    .badge.verde{background:rgba(39,168,95,.28);border-color:rgba(39,168,95,.45);}
+    .badge.vermelho{background:rgba(192,57,43,.3);border-color:rgba(192,57,43,.45);}
+
+    nav{display:flex;background:#0f2744;overflow-x:auto;border-bottom:3px solid #27a85f;}
+    nav button{background:none;border:none;color:rgba(255,255,255,.62);padding:12px 16px;font-size:.84rem;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-3px;transition:all .18s;}
+    nav button:hover{color:#fff;background:rgba(255,255,255,.06);}
+    nav button.active{color:#fff;border-bottom-color:#27a85f;}
+
+    main{max-width:980px;margin:0 auto;padding:24px 14px 60px;}
+    .section{display:none;}.section.active{display:block;}
+
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:16px;}
+    .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px;}
+    .grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:13px;margin-bottom:16px;}
+    @media(max-width:700px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;} header h1{font-size:1.3rem;}}
+
+    .card{background:#fff;border-radius:var(--radius);box-shadow:var(--sombra);padding:18px;}
+    .card-title{font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--cinza);margin-bottom:8px;display:flex;align-items:center;gap:5px;}
+    .card-value{font-size:1.65rem;font-weight:700;line-height:1.1;}
+    .card-sub{font-size:.79rem;color:var(--cinza);margin-top:4px;line-height:1.45;}
+    .card.verde{border-top:4px solid var(--verde);}
+    .card.vermelho{border-top:4px solid var(--vermelho);}
+    .card.amarelo{border-top:4px solid var(--amarelo);}
+    .card.azul{border-top:4px solid var(--azul-claro);}
+    .card.roxo{border-top:4px solid var(--roxo);}
+
+    .alerta{border-radius:var(--radius);padding:13px 17px;margin-bottom:14px;display:flex;gap:12px;align-items:flex-start;}
+    .alerta.critico{background:var(--vermelho-bg);border-left:4px solid var(--vermelho);}
+    .alerta.atencao{background:var(--amarelo-bg);border-left:4px solid var(--amarelo);}
+    .alerta.ok{background:var(--verde-bg);border-left:4px solid var(--verde);}
+    .alerta.info{background:var(--azul-bg);border-left:4px solid var(--azul-claro);}
+    .alerta.roxo{background:var(--roxo-bg);border-left:4px solid var(--roxo);}
+    .alerta-icon{font-size:1.2rem;flex-shrink:0;margin-top:2px;}
+    .alerta-titulo{font-weight:700;font-size:.92rem;margin-bottom:4px;}
+    .alerta-texto{font-size:.85rem;line-height:1.57;color:#444;}
+
+    table{width:100%;border-collapse:collapse;font-size:.85rem;}
+    th{background:#f4f6f7;font-weight:700;text-align:left;padding:9px 12px;font-size:.74rem;text-transform:uppercase;letter-spacing:.5px;color:var(--cinza);}
+    td{padding:9px 12px;border-bottom:1px solid #f0f2f5;vertical-align:middle;}
+    tr:last-child td{border-bottom:none;}
+    tr:hover td{background:#fafbfc;}
+    .right{text-align:right;}.negrito{font-weight:700;}.muted{color:#999;font-size:.79rem;}
+
+    .tag{display:inline-block;border-radius:6px;padding:2px 9px;font-size:.72rem;font-weight:700;}
+    .tag.verde{background:var(--verde-bg);color:#155c35;}
+    .tag.vermelho{background:var(--vermelho-bg);color:var(--vermelho);}
+    .tag.amarelo{background:var(--amarelo-bg);color:#7a5800;}
+    .tag.azul{background:var(--azul-bg);color:var(--azul);}
+    .tag.cinza{background:#eee;color:#555;}
+    .tag.roxo{background:var(--roxo-bg);color:var(--roxo);}
+
+    .regra{background:#fff;border-radius:var(--radius);box-shadow:var(--sombra);padding:17px 20px;margin-bottom:13px;}
+    .regra.proibido{border-left:5px solid var(--vermelho);}
+    .regra.obrigatorio{border-left:5px solid var(--verde);}
+    .regra.alerta-r{border-left:5px solid var(--amarelo);}
+    .regra.info-r{border-left:5px solid var(--azul-claro);}
+    .regra.roxo-r{border-left:5px solid var(--roxo);}
+    .regra h3{font-size:.94rem;font-weight:700;margin-bottom:7px;}
+    .regra p,.regra li{font-size:.85rem;line-height:1.6;color:#444;}
+    .regra ul{padding-left:18px;margin-top:4px;}
+
+    .timeline{position:relative;padding-left:24px;}
+    .timeline::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:2px;background:linear-gradient(to bottom,var(--verde),var(--azul-claro));}
+    .tl-item{position:relative;margin-bottom:18px;}
+    .tl-dot{position:absolute;left:-24px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--verde);border:2px solid #eef0f3;box-shadow:0 0 0 2px var(--verde);}
+    .tl-mes{font-weight:700;font-size:.8rem;color:var(--verde);margin-bottom:4px;}
+    .tl-card{background:#fff;border-radius:10px;padding:13px 16px;box-shadow:var(--sombra);font-size:.84rem;line-height:1.6;}
+
+    .sec-titulo{font-size:1.18rem;font-weight:700;color:var(--azul);margin-bottom:16px;padding-bottom:9px;border-bottom:2px solid #dde4ee;display:flex;align-items:center;gap:8px;}
+
+    /* ── SEMANA CARD ── */
+    .semana-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+    @media(max-width:700px){.semana-grid{grid-template-columns:1fr 1fr;}}
+    .semana-card{background:#fff;border-radius:10px;box-shadow:var(--sombra);padding:14px;text-align:center;}
+    .semana-num{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--cinza);margin-bottom:6px;}
+    .semana-val{font-size:1.4rem;font-weight:700;color:var(--azul);}
+    .semana-sub{font-size:.75rem;color:var(--cinza);margin-top:3px;}
+    .semana-bar{height:6px;border-radius:3px;background:#e8ecf0;margin-top:8px;}
+    .semana-bar-fill{height:6px;border-radius:3px;background:var(--verde);}
+
+    /* ── CONTROLE SEMANAL TABLE ── */
+    .ctrl-head{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;gap:0;background:#f4f6f7;border-radius:8px 8px 0 0;padding:8px 12px;font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--cinza);}
+    .ctrl-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;gap:0;padding:9px 12px;border-bottom:1px solid #f0f2f5;font-size:.84rem;background:#fff;}
+    .ctrl-row:last-child{border-bottom:none;border-radius:0 0 8px 8px;}
+    .ctrl-row:hover{background:#fafbfc;}
+    .ctrl-wrap{border:1px solid #e8ecf0;border-radius:8px;margin-bottom:18px;overflow:hidden;}
+    .ctrl-input{width:100%;border:1px solid #dde4ee;border-radius:5px;padding:4px 7px;font-size:.83rem;text-align:right;background:#fff;}
+    .ctrl-input:focus{outline:none;border-color:var(--azul-claro);}
+    .ctrl-total{font-weight:700;color:var(--azul);}
+    .ctrl-saldo-pos{color:var(--verde);font-weight:700;}
+    .ctrl-saldo-neg{color:var(--vermelho);font-weight:700;}
+
+    /* ── VENCIMENTO CARTÃO ── */
+    .cartao-box{background:#fff;border-radius:var(--radius);box-shadow:var(--sombra);padding:20px;margin-bottom:16px;}
+    .cartao-titulo{font-weight:700;font-size:1rem;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+    .ciclo{display:flex;align-items:center;gap:0;margin-top:10px;flex-wrap:wrap;}
+    .ciclo-item{background:var(--azul-bg);border:1px solid #cde5f5;border-radius:8px;padding:10px 14px;font-size:.82rem;line-height:1.5;flex:1;min-width:120px;}
+    .ciclo-arrow{font-size:1.2rem;color:var(--cinza);padding:0 8px;align-self:center;}
+    .ciclo-item.destaque{background:var(--verde-bg);border-color:#a8d5be;}
+    .ciclo-item .label{font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--cinza);margin-bottom:3px;}
+    .ciclo-item .val{font-weight:700;color:var(--azul);font-size:.95rem;}
+
+    /* ── RESERVA MÉTODO ── */
+    .metodo-box{background:#fff;border-radius:var(--radius);box-shadow:var(--sombra);overflow:hidden;margin-bottom:16px;}
+    .metodo-header{padding:14px 18px;background:linear-gradient(90deg,#1a5276,#6c3483);color:#fff;font-weight:700;font-size:.95rem;}
+    .metodo-body{padding:16px 18px;}
+    .opcao{display:flex;gap:14px;padding:12px;border-radius:8px;margin-bottom:10px;cursor:pointer;border:2px solid transparent;transition:all .2s;}
+    .opcao.recomendada{border-color:var(--verde);background:var(--verde-bg);}
+    .opcao.alternativa{background:var(--cinza-bg);border-color:#dde4ee;}
+    .opcao-num{font-size:1.5rem;flex-shrink:0;}
+    .opcao-titulo{font-weight:700;font-size:.92rem;}
+    .opcao-detalhe{font-size:.82rem;color:#555;margin-top:3px;line-height:1.5;}
+
+    .pessoa-card{background:#fff;border-radius:var(--radius);box-shadow:var(--sombra);overflow:hidden;}
+    .pessoa-header{padding:14px 18px;color:#fff;font-weight:700;}
+    .pessoa-header.t{background:linear-gradient(90deg,#1a5276,#2980b9);}
+    .pessoa-header.b{background:linear-gradient(90deg,#1a7a4a,#27a85f);}
+    .pessoa-body{padding:14px 18px;}
+    .pessoa-linha{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f2f5;font-size:.85rem;}
+    .pessoa-linha:last-child{border-bottom:none;}
+
+    .chip{display:inline-flex;align-items:center;gap:4px;background:#eaf4fb;border:1px solid #cde5f5;border-radius:20px;padding:3px 10px;font-size:.75rem;font-weight:600;color:var(--azul);margin:2px;}
+    .chip.urgente{background:var(--vermelho-bg);border-color:#f5c6c6;color:var(--vermelho);}
+    .chip.quase{background:var(--amarelo-bg);border-color:#f0d08a;color:#7a5800;}
+    .chip.verde{background:var(--verde-bg);border-color:#a8d5be;color:#155c35;}
+
+    footer{text-align:center;font-size:.77rem;color:#aaa;padding:20px;margin-top:10px;}
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📊 Plano Financeiro — Thácio & Byanca</h1>
+  <p>Diagnóstico real · Método semanal · Controle de gastos · Cartões ajustados</p>
+  <div class="badges">
+    <span class="badge verde">✅ Renda recorrente: R$ 11.410</span>
+    <span class="badge vermelho">🔴 Comprometimento: ~84%</span>
+    <span class="badge">Frederico 50/50 · 1 cartão Caixa</span>
+    <span class="badge" style="background:rgba(108,52,131,.35);border-color:rgba(108,52,131,.5)">Repasse Byanca R$ 3.000 este mês</span>
+    <span class="badge">Atualizado: Abril/2026</span>
+  </div>
+</header>
+
+<nav>
+  <button class="active" onclick="go('diagnostico',this)">🔍 Diagnóstico</button>
+  <button onclick="go('divisao',this)">⚖️ Divisão & Saldo</button>
+  <button onclick="go('metodo',this)">🗓️ Método Semanal</button>
+  <button onclick="go('controle',this)">📝 Controle Semanal</button>
+  <button onclick="go('cartoes',this)">💳 Cartão & Bancos</button>
+  <button onclick="go('taticas',this)">⚡ Táticas</button>
+  <button onclick="go('perspectivas',this)">📈 Perspectivas</button>
+  <button onclick="go('parcelas',this)">📋 Parcelas</button>
+  <button onclick="go('regras',this)">🏦 Regras</button>
+  <button onclick="go('cronograma',this)">📅 Cronograma</button>
+</nav>
+
+<main>
+
+<!-- ══════════════════════ DIAGNÓSTICO ══════════════════════ -->
+<div id="diagnostico" class="section active">
+  <div class="sec-titulo">🔍 Diagnóstico Financeiro Real</div>
+
+  <div class="grid-4">
+    <div class="card verde">
+      <div class="card-title">🟢 Renda Recorrente</div>
+      <div class="card-value" style="color:var(--verde)">R$ 11.410</div>
+      <div class="card-sub">Thácio R$ 7.310 + Byanca R$ 4.100</div>
+    </div>
+    <div class="card azul">
+      <div class="card-title">🔵 Líquido Thácio</div>
+      <div class="card-value" style="color:var(--azul-claro)">R$ 7.310</div>
+      <div class="card-sub">Base recorrente (sem retroativos)<br>Folha: R$ 7.563 − R$ 253 retro</div>
+    </div>
+    <div class="card vermelho">
+      <div class="card-title">🔴 Comprometido Atual</div>
+      <div class="card-value" style="color:var(--vermelho)">~84%</div>
+      <div class="card-sub">Ideal: ≤ 55%<br>23 parcelas simultâneas</div>
+    </div>
+    <div class="card amarelo">
+      <div class="card-title">⚡ Margem Real</div>
+      <div class="card-value" style="color:var(--amarelo)">R$ 1.728</div>
+      <div class="card-sub">Saldo conjunto após tudo<br>Para reserva + amortização</div>
+    </div>
+  </div>
+
+  <div class="alerta info">
+    <div class="alerta-icon">📄</div>
+    <div>
+      <div class="alerta-titulo">Folha de Thácio — dados reais (Abril/2026)</div>
+      <div class="alerta-texto">Bruto R$ 9.140,54 → Descontos R$ 1.576,67 (GEAP R$ 968 + Copart. R$ 168 + INSS R$ 441) → <strong>Líquido R$ 7.563,87</strong>. Desse valor, <strong>R$ 253,77 são retroativos</strong> (saúde abono Lei 9704/25) — não se repetem. Base mensal real: <strong>R$ 7.310,10</strong>. Repasse da mãe de Byanca (R$ 485) entra até o dia 5 — custo líquido do plano para Thácio: R$ 650,81/mês.</div>
+    </div>
+  </div>
+
+  <div class="alerta critico">
+    <div class="alerta-icon">🚗</div>
+    <div>
+      <div class="alerta-titulo">Carro consome 19% da renda conjunta sozinho</div>
+      <div class="alerta-texto">Financiamento R$ 1.795 + combustível R$ 350 = <strong>R$ 2.145/mês</strong>. Teto rígido de combustível: R$ 350. Quando o financiamento encerrar, esse será o maior alívio do orçamento — o valor liberado vai inteiro para reserva.</div>
+    </div>
+  </div>
+
+  <div class="alerta critico">
+    <div class="alerta-icon">💳</div>
+    <div>
+      <div class="alerta-titulo">R$ 3.192/mês em parcelas simultâneas — Thácio</div>
+      <div class="alerta-texto">Franquia (R$ 779), CrediMóveis (R$ 504), Computador (R$ 310), Intercooler (R$ 292), Frederico internação (R$ 450) e mais 18 itens. Boa notícia: ~12 itens encerram em maio/2026, liberando ~R$ 750/mês. <strong>Esse valor precisa ir para reserva ou amortização — não pode sumir no orçamento.</strong></div>
+    </div>
+  </div>
+
+  <div class="alerta ok">
+    <div class="alerta-icon">🤝</div>
+    <div>
+      <div class="alerta-titulo">Frederico 50/50 — acordado pelo casal</div>
+      <div class="alerta-texto">Cada um paga <strong>R$ 537,87/mês</strong> de Frederico. Byanca assume mais do que a proporção de renda indicaria (36% seria R$ 387), mas menos que o meio a meio original durante as parcelas pesadas. Decisão do casal — registrada e incorporada no plano.</div>
+    </div>
+  </div>
+
+  <div class="alerta atencao">
+    <div class="alerta-icon">🏦</div>
+    <div>
+      <div class="alerta-titulo">Cartões: vencimentos desalinhados com datas de recebimento</div>
+      <div class="alerta-texto">Thácio recebe dia 20 e Byanca recebe no 5º dia útil (~dia 7). Se os vencimentos dos cartões forem antes do salário, o casal usa limite sem cobertura, arriscando juro rotativo. A aba <strong>Cartões</strong> traz os vencimentos ideais para cada um e a lógica do ciclo.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ DIVISÃO & SALDO ══════════════════════ -->
+<div id="divisao" class="section">
+  <div class="sec-titulo">⚖️ Como o Dinheiro Funciona na Prática</div>
+
+  <!-- CORREÇÃO: MODELO REAL DO CASAL -->
+  <div class="alerta info">
+    <div class="alerta-icon">🏠</div>
+    <div>
+      <div class="alerta-titulo">Modelo real: todas as contas no nome de Thácio — Byanca repassa R$ 3.000</div>
+      <div class="alerta-texto">Como todas as contas fixas, cartão, carro e demais despesas estão no nome de Thácio, <strong>Byanca repassa R$ 3.000/mês</strong> como sua contribuição para o orçamento conjunto. Com o que sobra do salário dela (R$ 1.100), ela cobre seus gastos pessoais. A mãe de Byanca repassa R$ 485 referentes ao plano de saúde. Thácio, portanto, é quem administra e paga tudo — e o orçamento deve ser visto por esse prisma.</div>
+    </div>
+  </div>
+
+  <!-- ENTRADAS QUE THÁCIO ADMINISTRA -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">📥 Tudo que entra na conta de Thácio todo mês</div>
+    <table>
+      <thead><tr><th>Fonte</th><th>Periodicidade</th><th class="right">Valor</th><th>Observação</th></tr></thead>
+      <tbody>
+        <tr><td class="negrito">Salário Thácio</td><td>Dia 20</td><td class="right negrito">R$ 7.310,10</td><td>Base recorrente (sem retroativos)</td></tr>
+        <tr><td class="negrito">Repasse Byanca</td><td>Até dia 8</td><td class="right negrito">R$ 3.000,00</td><td>Contribuição dela para as contas conjuntas</td></tr>
+        <tr><td class="negrito">Repasse sogra (plano)</td><td>Até dia 5</td><td class="right negrito">R$ 485,00</td><td>Compensa parte do desconto do GEAP na folha</td></tr>
+        <tr style="background:var(--verde-bg)"><td class="negrito">TOTAL ADMINISTRADO</td><td></td><td class="right negrito" style="color:var(--verde);font-size:1.05rem">R$ 10.795,10</td><td>Thácio paga tudo com esse valor</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;padding:9px 13px;background:var(--cinza-bg);border-radius:8px;font-size:.82rem;color:#555">
+      <strong>Byanca:</strong> recebe R$ 4.100, repassa R$ 3.000 e fica com <strong>R$ 1.100 pessoais</strong> — para roupas, beleza, alimentação pessoal e gastos próprios.
+    </div>
+  </div>
+
+  <!-- SAÍDAS DETALHADAS -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">📤 Saídas mensais — Abril/2026 (mês atual)</div>
+    <table>
+      <thead><tr><th>Categoria</th><th class="right">Valor</th><th>Tipo</th></tr></thead>
+      <tbody>
+        <tr><td>Financiamento do carro</td><td class="right">R$ 1.795,15</td><td><span class="tag azul">Débito auto.</span></td></tr>
+        <tr><td>Condomínio + Luz + Água + Internet</td><td class="right">R$ 750,00</td><td><span class="tag azul">Débito auto.</span></td></tr>
+        <tr><td>IPTU (3 meses restam)</td><td class="right">R$ 198,00</td><td><span class="tag cinza">Boleto</span></td></tr>
+        <tr><td>Parcelas ativas (Franquia, CrediMóveis, Computador, Fred, outros)</td><td class="right">R$ 3.786,31</td><td><span class="tag vermelho">Cartão</span></td></tr>
+        <tr><td>Frederico — ração e manutenção recorrente</td><td class="right">R$ 250,00</td><td><span class="tag amarelo">Variável</span></td></tr>
+        <tr><td>Assinaturas (Claude, Microsoft, Amazon, Folha, Premiere, Buscador)</td><td class="right">R$ 220,70</td><td><span class="tag cinza">Automático</span></td></tr>
+        <tr><td>Supermercado + alimentação fora (teto)</td><td class="right">R$ 1.100,00</td><td><span class="tag amarelo">Variável</span></td></tr>
+        <tr><td>Combustível (teto)</td><td class="right">R$ 350,00</td><td><span class="tag amarelo">Variável</span></td></tr>
+        <tr><td>Almoço no fórum (2×/semana × 4 semanas)</td><td class="right">R$ 240,00</td><td><span class="tag cinza">Profissional</span></td></tr>
+        <tr style="background:#fff3f3"><td class="negrito">TOTAL SAÍDAS</td><td class="right negrito" style="color:var(--vermelho)">R$ 8.690,16</td><td></td></tr>
+        <tr style="background:var(--amarelo-bg)"><td class="negrito">SALDO — Abril/2026</td><td class="right negrito" style="color:var(--amarelo)">R$ 2.104,94</td><td><span class="tag amarelo">Comprometimento 80%</span></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;padding:9px 13px;background:var(--amarelo-bg);border-radius:8px;font-size:.83rem;color:#7a5800">
+      <strong>⚠️ Este mês é ainda pesado</strong> por conta do volume de parcelas simultâneas. A partir de maio, com as quitações antecipadas e os encerramentos naturais, o cenário muda significativamente — veja a aba <strong>Perspectivas</strong>.
+    </div>
+  </div>
+
+  <!-- FREDERICO 50/50 -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">🐾 Frederico — 50/50 (já embutido no repasse de Byanca)</div>
+    <table>
+      <thead><tr><th>Item</th><th class="right">Total/mês</th><th class="right">Thácio paga</th><th class="right">Byanca (via repasse)</th><th>Prazo</th></tr></thead>
+      <tbody>
+        <tr><td>Internação — parcelas</td><td class="right">R$ 450,00</td><td class="right">R$ 225,00</td><td class="right">R$ 225,00</td><td><span class="tag amarelo">8x</span></td></tr>
+        <tr><td>Exames parcelados</td><td class="right">R$ 121,75</td><td class="right">R$ 60,88</td><td class="right">R$ 60,87</td><td><span class="tag amarelo">5x</span></td></tr>
+        <tr><td>Mr. Zoo parcelado</td><td class="right">R$ 170,00</td><td class="right">R$ 85,00</td><td class="right">R$ 85,00</td><td><span class="tag amarelo">3x</span></td></tr>
+        <tr><td>Ração + manutenção recorrente</td><td class="right">R$ 250,00</td><td class="right">R$ 125,00</td><td class="right">R$ 125,00</td><td><span class="tag verde">Recorrente</span></td></tr>
+        <tr style="background:#f4f6f7"><td class="negrito">TOTAL FREDERICO</td><td class="right negrito">R$ 991,75</td><td class="right negrito" style="color:var(--azul)">R$ 495,88</td><td class="right negrito" style="color:var(--verde)">R$ 495,87</td><td></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:9px;padding:8px 12px;background:var(--cinza-bg);border-radius:7px;font-size:.81rem;color:#555">
+      A parte de Byanca (R$ 495,87) já está incluída dentro dos R$ 3.000 que ela repassa — não é valor adicional.
+    </div>
+  </div>
+
+  <!-- SALDO REAL -->
+  <div style="padding:16px 18px;background:var(--verde-bg);border-radius:var(--radius);border-left:5px solid var(--verde)">
+    <div style="font-weight:700;color:var(--verde);font-size:1rem;margin-bottom:8px">💚 Saldo disponível este mês: R$ 2.104,94</div>
+    <div style="font-size:.85rem;color:#1a5c35;line-height:1.65">
+      Desse valor: <strong>R$ 73</strong> vão automaticamente para a reserva (1%) no dia 20. O restante (~R$ 2.031) cobre os gastos variáveis da semana (calculadora na aba Método Semanal) e a amortização estratégica com o repasse de Byanca.<br><br>
+      <strong>A partir de junho/2026</strong>, após as quitações antecipadas e os encerramentos naturais de maio, o saldo disponível sobe para ~R$ 3.043 — veja os cenários completos na aba <strong>Perspectivas</strong>.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ MÉTODO SEMANAL ══════════════════════ -->
+<div id="metodo" class="section">
+  <div class="sec-titulo">🗓️ Método Semanal — Como Funciona</div>
+
+  <div class="alerta roxo">
+    <div class="alerta-icon">💡</div>
+    <div>
+      <div class="alerta-titulo">A lógica do método: pague tudo primeiro, divida o resto</div>
+      <div class="alerta-texto">No dia do salário: (1) reserva automática vai antes de qualquer gasto; (2) todos os compromissos fixos e parcelas são quitados; (3) o que sobra é dividido pelo número de semanas até o próximo pagamento. Cada semana tem um teto de gasto variável. Isso elimina o "saldo alto no começo, sufoco no final do mês".</div>
+    </div>
+  </div>
+
+  <!-- REPASSE DE BYANCA — ESTE MÊS -->
+  <div class="alerta atencao">
+    <div class="alerta-icon">💰</div>
+    <div>
+      <div class="alerta-titulo">R$ 3.000 de Byanca — contribuição fixa para as contas conjuntas</div>
+      <div class="alerta-texto">
+        Esse valor cobre a parte dela nas despesas conjuntas (todas no nome de Thácio). <strong>Este mês, como os gastos estão elevados, toda a entrada já está comprometida com as saídas correntes</strong> — mas o saldo total administrado (R$ 10.795) ainda permite usar o excedente estrategicamente para quitações antecipadas:
+        <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;font-size:.84rem">
+          <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #f0d08a">
+            <div style="font-weight:700;color:var(--vermelho)">Quitar Franquia</div>
+            <div style="font-size:1.1rem;font-weight:700">R$ 1.557,96</div>
+            <div style="color:#888;font-size:.78rem">2 parcelas restantes de R$ 778,98</div>
+          </div>
+          <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #f0d08a">
+            <div style="font-weight:700;color:var(--amarelo)">Quitar Intercooler</div>
+            <div style="font-size:1.1rem;font-weight:700">R$ 876,75</div>
+            <div style="color:#888;font-size:.78rem">3 parcelas restantes de R$ 292,25</div>
+          </div>
+          <div style="background:var(--verde-bg);border-radius:8px;padding:10px 12px;border:1px solid #a8d5be">
+            <div style="font-weight:700;color:var(--verde)">Sobra → Reserva</div>
+            <div style="font-size:1.1rem;font-weight:700">R$ 565,29</div>
+            <div style="color:#888;font-size:.78rem">Semente da reserva de emergência</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;padding:8px 12px;background:var(--verde-bg);border-radius:8px;font-weight:700;color:#1a5c35;font-size:.86rem">
+          ✅ Efeito imediato: R$ 1.071/mês liberados a partir de maio/2026 — sem precisar esperar.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="metodo-box">
+    <div class="metodo-header">💰 Passo 1 — Reserva Automática (escolha o percentual)</div>
+    <div class="metodo-body">
+      <div class="opcao recomendada">
+        <div class="opcao-num">1️⃣</div>
+        <div>
+          <div class="opcao-titulo">Começar com 1% — Criar o hábito primeiro</div>
+          <div class="opcao-detalhe">
+            Thácio: <strong>R$ 73,10/mês</strong> · Byanca: <strong>R$ 41,00/mês</strong> · Total: R$ 114/mês<br>
+            Em 12 meses: R$ 1.368 acumulados. Parece pouco, mas o objetivo agora é o <em>hábito</em>, não o valor. Quando as parcelas grandes encerrarem (a partir de jun/2026), elevar para 5% ou 10% sem dor — porque o comportamento já está instalado.
+          </div>
+        </div>
+      </div>
+      <div class="opcao alternativa">
+        <div class="opcao-num">2️⃣</div>
+        <div>
+          <div class="opcao-titulo">5% — Se tiver disciplina nos gastos variáveis</div>
+          <div class="opcao-detalhe">
+            Thácio: <strong>R$ 365,51/mês</strong> · Byanca: <strong>R$ 205,00/mês</strong> · Total: R$ 570/mês<br>
+            Em 12 meses: R$ 6.840 acumulados. Impacto: o teto semanal pessoal de Thácio cai para R$ 77/semana — apertado, mas factível. Recomendado <strong>apenas a partir de junho/2026</strong>, quando a franquia e o intercooler encerrarem.
+          </div>
+        </div>
+      </div>
+      <div style="padding:10px 12px;background:var(--azul-bg);border-radius:8px;margin-top:4px;font-size:.83rem;color:#1a4060">
+        <strong>Como fazer:</strong> Criar transferência automática no app do banco para o dia do recebimento — Thácio: dia 20 · Byanca: dia 8 (5º dia útil). A reserva vai para conta separada (Nubank/Inter — rendimento automático 100% CDI). <strong>Não mexer nela exceto emergência real.</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="metodo-box">
+    <div class="metodo-header">📅 Passo 2 — THÁCIO: Divisão Semanal (recebe dia 20)</div>
+    <div class="metodo-body">
+      <div style="font-size:.85rem;color:#444;margin-bottom:14px;line-height:1.6">
+        Após separar a reserva e pagar tudo (parcelas + fixos via débito automático), o saldo restante é dividido pelas semanas até o próximo dia 20. Em meses com 4 semanas cheias: <strong>R$ 150/semana</strong> (com 1% reserva). Em meses com 5 semanas: <strong>R$ 120/semana</strong>.
+      </div>
+      <div class="semana-grid" id="semanas-thacio">
+        <div class="semana-card">
+          <div class="semana-num">Semana 1</div>
+          <div class="semana-val" id="sw1t">R$ 150</div>
+          <div class="semana-sub">Dias 20–26</div>
+          <div class="semana-bar"><div class="semana-bar-fill" style="width:100%"></div></div>
+        </div>
+        <div class="semana-card">
+          <div class="semana-num">Semana 2</div>
+          <div class="semana-val" id="sw2t">R$ 150</div>
+          <div class="semana-sub">Dias 27–3</div>
+          <div class="semana-bar"><div class="semana-bar-fill" style="width:100%"></div></div>
+        </div>
+        <div class="semana-card">
+          <div class="semana-num">Semana 3</div>
+          <div class="semana-val" id="sw3t">R$ 150</div>
+          <div class="semana-sub">Dias 4–10</div>
+          <div class="semana-bar"><div class="semana-bar-fill" style="width:100%"></div></div>
+        </div>
+        <div class="semana-card">
+          <div class="semana-num">Semana 4</div>
+          <div class="semana-val" id="sw4t">R$ 150</div>
+          <div class="semana-sub">Dias 11–19</div>
+          <div class="semana-bar"><div class="semana-bar-fill" style="width:100%"></div></div>
+        </div>
+      </div>
+
+      <!-- ALMOÇO FÓRUM -->
+      <div style="background:var(--amarelo-bg);border:1px solid #f0d08a;border-radius:8px;padding:11px 14px;margin-bottom:12px;font-size:.84rem">
+        <strong>🍽️ Almoço no Fórum — R$ 60/semana (2x por semana × R$ 30)</strong><br>
+        <span style="color:#555">Este é um gasto profissional fixo e previsível. Ele é descontado <em>antes</em> de definir o teto de consumo livre. Não é lazer — é custo de trabalho.</span>
+        <div style="margin-top:8px;display:flex;gap:10px;font-size:.82rem;flex-wrap:wrap">
+          <span style="background:#fff;border-radius:6px;padding:5px 10px;border:1px solid #f0d08a">📅 Segunda + [outro dia] = R$ 60/sem</span>
+          <span style="background:#fff;border-radius:6px;padding:5px 10px;border:1px solid #f0d08a">📆 Mensal: R$ 240 (4 semanas)</span>
+          <span style="background:#fff;border-radius:6px;padding:5px 10px;border:1px solid #f0d08a">💳 Pago à vista no débito — sem parcelamento</span>
+        </div>
+      </div>
+
+      <div style="background:var(--cinza-bg);border-radius:8px;padding:12px 14px;font-size:.83rem;margin-bottom:12px">
+        <strong>🔢 Calculadora:</strong> Escolha o percentual de reserva e o número de semanas do mês:
+        <div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;align-items:center">
+          <label style="font-size:.82rem">Reserva: <select id="pct-t" onchange="calcSemanal()" style="border:1px solid #dde4ee;border-radius:5px;padding:4px 8px">
+            <option value="1">1% — R$ 73/mês</option>
+            <option value="5">5% — R$ 366/mês</option>
+          </select></label>
+          <label style="font-size:.82rem">Semanas: <select id="sem-t" onchange="calcSemanal()" style="border:1px solid #dde4ee;border-radius:5px;padding:4px 8px">
+            <option value="4">4 semanas</option>
+            <option value="5">5 semanas</option>
+          </select></label>
+          <div id="resultado-t" style="font-weight:700;color:var(--azul);font-size:.92rem"></div>
+        </div>
+        <div id="detalhe-t" style="margin-top:8px;font-size:.81rem;color:#555"></div>
+      </div>
+
+      <div style="padding:11px 14px;background:var(--verde-bg);border-radius:8px;font-size:.83rem;color:#1a5c35">
+        <strong>Regra prática:</strong> Na manhã do dia 20 — (1) transfere a reserva para o banco "esquecido"; (2) confirma os débitos automáticos cobertos; (3) calcula o teto da semana e anota no celular. A partir daí, consulta só o teto semanal — nunca o saldo total do mês. O fórum já está descontado: o que a calculadora mostrar é o que você tem livre para tudo mais.
+      </div>
+    </div>
+  </div>
+
+  <div class="metodo-box">
+    <div class="metodo-header">📅 Passo 2 — BYANCA: Divisão Semanal (recebe ~5º dia útil)</div>
+    <div class="metodo-body">
+      <div style="font-size:.85rem;color:#444;margin-bottom:14px;line-height:1.6">
+        Byanca recebe ~dia 7 (5º dia útil). Saldo após pagar tudo: <strong>R$ 1.055,76</strong>. Com 1% de reserva (R$ 41): sobram <strong>R$ 1.015/mês ÷ 4 semanas = R$ 254/semana</strong>. Esse valor inclui o gasto pessoal dela (teto R$ 1.000) mais a margem positiva.
+      </div>
+      <div class="semana-grid">
+        <div class="semana-card">
+          <div class="semana-num">Semana 1</div>
+          <div class="semana-val">R$ 254</div>
+          <div class="semana-sub">Dias 7–13</div>
+          <div class="semana-bar"><div class="semana-bar-fill" style="width:100%;background:var(--verde)"></div></div>
+        </div>
+        <div class="semana-card">
+          <div class="semana-num">Semana 2</div>
+          <div class="semana-val">R$ 254</div>
+          <div class="semana-sub">Dias 14–20</div>
+          <div class="semana-bar"><div class="semana-bar-fill" style="width:100%;background:var(--verde)"></div></div>
+        </div>
+        <div class="semana-card">
+          <div class="semana-num">Semana 3</div>
+          <div class="semana-val">R$ 254</div>
+          <div class="semana-sub">Dias 21–27</div>
+          <div class="semana-bar"><div class="semana-bar-fill" style="width:100%;background:var(--verde)"></div></div>
+        </div>
+        <div class="semana-card">
+          <div class="semana-num">Semana 4</div>
+          <div class="semana-val">R$ 254</div>
+          <div class="semana-sub">Dias 28–6</div>
+          <div class="semana-bar"><div class="semana-bar-fill" style="width:100%;background:var(--verde)"></div></div>
+        </div>
+      </div>
+      <div style="padding:11px 14px;background:var(--verde-bg);border-radius:8px;font-size:.83rem;color:#1a5c35">
+        <strong>Regra prática:</strong> No dia do recebimento (~dia 7), Byanca faz o mesmo: reserva automática, confere débitos automáticos, anota o teto semanal. O que sobrar no final de cada semana <em>acumula para a semana seguinte</em> — não é permissão para gastar mais. Sobra do mês vai para amortização.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ CONTROLE SEMANAL ══════════════════════ -->
+<div id="controle" class="section">
+  <div class="sec-titulo">📝 Controle de Gastos Semanal</div>
+
+  <div class="alerta info">
+    <div class="alerta-icon">📋</div>
+    <div>
+      <div class="alerta-titulo">Como usar este controle</div>
+      <div class="alerta-texto">Preencha os gastos reais de cada categoria a cada semana. O controle calcula automaticamente o saldo restante e alerta quando o teto está próximo. Execute toda <strong>segunda-feira de manhã</strong> referente à semana anterior — leva 5 minutos.</div>
+    </div>
+  </div>
+
+  <!-- SELETOR DE SEMANA -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">⚙️ Configurações da semana</div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end">
+      <div>
+        <label style="font-size:.8rem;font-weight:700;display:block;margin-bottom:4px">Semana de referência</label>
+        <select id="semana-ref" onchange="atualizaControle()" style="border:1px solid #dde4ee;border-radius:6px;padding:6px 10px;font-size:.85rem">
+          <option>Semana 1 (Dias 20–26)</option>
+          <option>Semana 2 (Dias 27–3)</option>
+          <option>Semana 3 (Dias 4–10)</option>
+          <option>Semana 4 (Dias 11–19)</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:.8rem;font-weight:700;display:block;margin-bottom:4px">Teto semanal Thácio (R$)</label>
+        <input type="number" id="teto-thacio" value="150" onchange="atualizaControle()" style="border:1px solid #dde4ee;border-radius:6px;padding:6px 10px;font-size:.85rem;width:120px">
+      </div>
+      <div>
+        <label style="font-size:.8rem;font-weight:700;display:block;margin-bottom:4px">Teto semanal Byanca (R$)</label>
+        <input type="number" id="teto-byanca" value="254" onchange="atualizaControle()" style="border:1px solid #dde4ee;border-radius:6px;padding:6px 10px;font-size:.85rem;width:120px">
+      </div>
+      <button onclick="limparControle()" style="background:#fff;border:1px solid #dde4ee;border-radius:6px;padding:6px 14px;font-size:.83rem;cursor:pointer;color:var(--cinza)">🗑️ Limpar semana</button>
+    </div>
+  </div>
+
+  <!-- CONTROLE CONJUNTO (gastos do casal) -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">🏠 Gastos Conjuntos da Semana</div>
+    <div class="ctrl-wrap">
+      <div class="ctrl-head">
+        <div>Categoria</div><div class="right">Teto/sem.</div><div class="right">Gasto real</div><div class="right">Saldo</div><div class="right">%usado</div><div class="right">Status</div>
+      </div>
+      <div class="ctrl-row" id="row-super">
+        <div>🛒 Supermercado</div>
+        <div class="right muted">R$ 175</div>
+        <div class="right"><input class="ctrl-input" type="number" placeholder="0,00" oninput="calcRow(this,'175','super')" id="inp-super"></div>
+        <div class="right ctrl-total" id="saldo-super">R$ 175</div>
+        <div class="right muted" id="pct-super">0%</div>
+        <div class="right" id="status-super"><span class="tag verde">OK</span></div>
+      </div>
+      <div class="ctrl-row" id="row-alim">
+        <div>🍽️ Alimentação fora / delivery</div>
+        <div class="right muted">R$ 100</div>
+        <div class="right"><input class="ctrl-input" type="number" placeholder="0,00" oninput="calcRow(this,'100','alim')" id="inp-alim"></div>
+        <div class="right ctrl-total" id="saldo-alim">R$ 100</div>
+        <div class="right muted" id="pct-alim">0%</div>
+        <div class="right" id="status-alim"><span class="tag verde">OK</span></div>
+      </div>
+      <div class="ctrl-row" id="row-comb">
+        <div>⛽ Combustível</div>
+        <div class="right muted">R$ 88</div>
+        <div class="right"><input class="ctrl-input" type="number" placeholder="0,00" oninput="calcRow(this,'88','comb')" id="inp-comb"></div>
+        <div class="right ctrl-total" id="saldo-comb">R$ 88</div>
+        <div class="right muted" id="pct-comb">0%</div>
+        <div class="right" id="status-comb"><span class="tag verde">OK</span></div>
+      </div>
+      <div class="ctrl-row" id="row-fred">
+        <div>🐾 Frederico (ração/manutenção)</div>
+        <div class="right muted">R$ 63</div>
+        <div class="right"><input class="ctrl-input" type="number" placeholder="0,00" oninput="calcRow(this,'63','fred')" id="inp-fred"></div>
+        <div class="right ctrl-total" id="saldo-fred">R$ 63</div>
+        <div class="right muted" id="pct-fred">0%</div>
+        <div class="right" id="status-fred"><span class="tag verde">OK</span></div>
+      </div>
+      <div class="ctrl-row" id="row-casa">
+        <div>🏠 Casa (imprevistos/higiene)</div>
+        <div class="right muted">R$ 60</div>
+        <div class="right"><input class="ctrl-input" type="number" placeholder="0,00" oninput="calcRow(this,'60','casa')" id="inp-casa"></div>
+        <div class="right ctrl-total" id="saldo-casa">R$ 60</div>
+        <div class="right muted" id="pct-casa">0%</div>
+        <div class="right" id="status-casa"><span class="tag verde">OK</span></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:10px 12px;background:#f4f6f7;border-radius:8px;font-size:.85rem;">
+      <span class="negrito">Total conjunto gasto na semana:</span>
+      <span class="negrito" id="total-conjunto" style="color:var(--azul)">R$ 0,00</span>
+    </div>
+  </div>
+
+  <!-- CONTROLE PESSOAL THÁCIO -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title" style="color:var(--azul)">🧑‍💼 Controle Pessoal — THÁCIO</div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:.85rem">
+      <span>Teto semanal pessoal:</span>
+      <span class="negrito" id="teto-t-display" style="color:var(--azul)">R$ 150,00</span>
+    </div>
+    <div class="ctrl-wrap">
+      <div class="ctrl-head">
+        <div>Categoria</div><div class="right">Valor gasto</div><div class="right" style="grid-column:span 4">Observação</div>
+      </div>
+      <div class="ctrl-row">
+        <div>🍺 Lazer / saída</div>
+        <div class="right"><input class="ctrl-input" type="number" placeholder="0,00" oninput="calcPessoal('thacio')" id="t1"></div>
+        <div style="grid-column:span 4"><input style="width:100%;border:1px solid #eee;border-radius:5px;padding:4px 7px;font-size:.81rem" placeholder="onde foi..." id="t1n"></div>
+      </div>
+      <div class="ctrl-row">
+        <div>🛍️ Compras pessoais</div>
+        <div class="right"><input class="ctrl-input" type="number" placeholder="0,00" oninput="calcPessoal('thacio')" id="t2"></div>
+        <div style="grid-column:span 4"><input style="width:100%;border:1px solid #eee;border-radius:5px;padding:4px 7px;font-size:.81rem" placeholder="o que foi..." id="t2n"></div>
+      </div>
+      <div class="ctrl-row">
+        <div>☕ Café / lanches</div>
+        <div class="right"><input class="ctrl-input" type="number" placeholder="0,00" oninput="calcPessoal('thacio')" id="t3"></div>
+        <div style="grid-column:span 4"><input style="width:100%;border:1px solid #eee;border-radius:5px;padding:4px 7px;font-size:.81rem" placeholder="local..." id="t3n"></div>
+      </div>
+      <div class="ctrl-row">
+        <div>🚌 Transporte extra (app)</div>
+        <div class="right"><input class="ctrl-input" type="number" placeholder="0,00" oninput="calcPessoal('thacio')" id="t4"></div>
+        <div style="grid-column:span 4"><input style="width:100%;border:1px solid #eee;border-radius:5px;padding:4px 7px;font-size:.81rem" placeholder="destino..." id="t4n"></div>
+      </div>
+      <div class="ctrl-row">
+        <div>📦 Outros</div>
+        <div class="right"><input class="ctrl-input" type="number" placeholder="0,00" oninput="calcPessoal('thacio')" id="t5"></div>
+        <div style="grid-column:span 4"><input style="width:100%;border:1px solid #eee;border-radius:5px;padding:4px 7px;font-size:.81rem" placeholder="descrição..." id="t5n"></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:10px 12px;background:#f4f6f7;border-radius:8px;font-size:.85rem;margin-top:4px">
+      <span class="negrito">Gasto pessoal Thácio na semana:</span>
+      <span class="negrito" id="total-thacio-pessoal" style="color:var(--azul)">R$ 0,00</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;font-size:.85rem;margin-top:4px" id="saldo-t-box">
+      <span>Saldo restante do teto semanal:</span>
+      <span class="negrito ctrl-saldo-pos" id="saldo-t-pessoal">R$ 150,00</span>
+    </div>
+  </div>
+
+  <!-- CONTROLE PESSOAL BYANCA -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title" style="color:var(--verde)">👩‍💼 Controle Pessoal — BYANCA</div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:.85rem">
+      <span>Teto semanal pessoal:</span>
+      <span class="negrito" id="teto-b-display" style="color:var(--verde)">R$ 254,00</span>
+    </div>
+    <div class="ctrl-wrap">
+      <div class="ctrl-head">
+        <div>Categoria</div><div class="right">Valor gasto</div><div class="right" style="grid-column:span 4">Observação</div>
+      </div>
+      <div class="ctrl-row">
+        <div>👗 Roupas / acessórios</div>
+        <div class="right"><input class="ctrl-input" type="number" placeholder="0,00" oninput="calcPessoal('byanca')" id="b1"></div>
+        <div style="grid-column:span 4"><input style="width:100%;border:1px solid #eee;border-radius:5px;padding:4px 7px;font-size:.81rem" placeholder="o que foi..." id="b1n"></div>
+      </div>
+      <div class="ctrl-row">
+        <div>💄 Beleza / cuidados</div>
+        <div class="right"><input class="ctrl-input" type="number" placeholder="0,00" oninput="calcPessoal('byanca')" id="b2"></div>
+        <div style="grid-column:span 4"><input style="width:100%;border:1px solid #eee;border-radius:5px;padding:4px 7px;font-size:.81rem" placeholder="onde..." id="b2n"></div>
+      </div>
+      <div class="ctrl-row">
+        <div>🍽️ Alimentação pessoal / café</div>
+        <div class="right"><input class="ctrl-input" type="number" placeholder="0,00" oninput="calcPessoal('byanca')" id="b3"></div>
+        <div style="grid-column:span 4"><input style="width:100%;border:1px solid #eee;border-radius:5px;padding:4px 7px;font-size:.81rem" placeholder="local..." id="b3n"></div>
+      </div>
+      <div class="ctrl-row">
+        <div>🛍️ Compras diversas</div>
+        <div class="right"><input class="ctrl-input" type="number" placeholder="0,00" oninput="calcPessoal('byanca')" id="b4"></div>
+        <div style="grid-column:span 4"><input style="width:100%;border:1px solid #eee;border-radius:5px;padding:4px 7px;font-size:.81rem" placeholder="o que foi..." id="b4n"></div>
+      </div>
+      <div class="ctrl-row">
+        <div>📦 Outros</div>
+        <div class="right"><input class="ctrl-input" type="number" placeholder="0,00" oninput="calcPessoal('byanca')" id="b5"></div>
+        <div style="grid-column:span 4"><input style="width:100%;border:1px solid #eee;border-radius:5px;padding:4px 7px;font-size:.81rem" placeholder="descrição..." id="b5n"></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:10px 12px;background:#f4f6f7;border-radius:8px;font-size:.85rem;margin-top:4px">
+      <span class="negrito">Gasto pessoal Byanca na semana:</span>
+      <span class="negrito" id="total-byanca-pessoal" style="color:var(--verde)">R$ 0,00</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;font-size:.85rem;margin-top:4px" id="saldo-b-box">
+      <span>Saldo restante do teto semanal:</span>
+      <span class="negrito ctrl-saldo-pos" id="saldo-b-pessoal">R$ 254,00</span>
+    </div>
+  </div>
+
+  <!-- RESUMO DA SEMANA -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">📊 Resumo & Avaliação da Semana</div>
+    <div id="resumo-semana" style="padding:12px;background:#f4f6f7;border-radius:8px;font-size:.85rem;line-height:1.8">
+      Preencha os campos acima para ver o resumo automático.
+    </div>
+    <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+      <button onclick="gerarResumo()" style="background:var(--verde);color:#fff;border:none;border-radius:7px;padding:9px 18px;font-size:.85rem;cursor:pointer;font-weight:600">📊 Gerar Resumo</button>
+      <button onclick="imprimirSemana()" style="background:var(--azul);color:#fff;border:none;border-radius:7px;padding:9px 18px;font-size:.85rem;cursor:pointer;font-weight:600">🖨️ Imprimir</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ CARTÃO & BANCOS ══════════════════════ -->
+<div id="cartoes" class="section">
+  <div class="sec-titulo">💳 Cartão Único & Estrutura Bancária</div>
+
+  <div class="alerta ok">
+    <div class="alerta-icon">✅</div>
+    <div>
+      <div class="alerta-titulo">Decisão do casal: 1 cartão Caixa — Byanca como adicional</div>
+      <div class="alerta-texto">Excelente decisão técnica. Um cartão único elimina fragmentação de faturas, centraliza o controle e impede que gastos se percam entre múltiplos extratos. Byanca como adicional significa que ambos usam o mesmo limite, o mesmo fechamento e a mesma fatura — sem surpresa no final do mês.</div>
+    </div>
+  </div>
+
+  <div class="cartao-box">
+    <div class="cartao-titulo">📅 Vencimento: dia 5 atual → mudar para dia 10</div>
+    <div style="font-size:.85rem;color:#444;margin-bottom:14px;line-height:1.6">Com vencimento no dia <strong>10</strong>, Byanca já recebeu (~dia 7) antes do vencimento. Thácio recebe no dia 20 — antes já separou o dinheiro. Nenhum dos dois paga com dinheiro que ainda não chegou.</div>
+    <div class="ciclo" style="margin-bottom:14px">
+      <div class="ciclo-item"><div class="label">👩 Byanca recebe</div><div class="val">~Dia 7–8</div></div>
+      <div class="ciclo-arrow">→</div>
+      <div class="ciclo-item destaque"><div class="label">✅ Vence dia 10</div><div class="val">Byanca já recebeu ✓</div></div>
+      <div class="ciclo-arrow">→</div>
+      <div class="ciclo-item"><div class="label">🗓️ Usam o cartão</div><div class="val">Dias 11 a 9</div></div>
+      <div class="ciclo-arrow">→</div>
+      <div class="ciclo-item"><div class="label">🧑 Thácio recebe</div><div class="val">Dia 20 ✓</div></div>
+    </div>
+    <div style="padding:12px 14px;background:var(--azul-bg);border-radius:8px;font-size:.83rem;color:#1a4060">
+      <strong>Como alterar na Caixa:</strong> App CEF → Cartões → Meu Cartão → Alterar vencimento → Dia 10. Se não aparecer no app: 0800 726 0101 ou agência. <strong>⚠️ No mês da transição:</strong> pode aparecer fatura dupla (dia 5 + dia 10). Separe dinheiro para cobrir os dois antes de solicitar.
+    </div>
+  </div>
+
+  <div class="sec-titulo" style="margin-top:24px">🏦 Estrutura Bancária — 3 funções, 3 casas</div>
+
+  <div class="alerta roxo">
+    <div class="alerta-icon">🧠</div>
+    <div>
+      <div class="alerta-titulo">Princípio: cada banco tem uma única função e não se mistura</div>
+      <div class="alerta-texto">CEF = receber e pagar compromissos. Banco operacional = dinheiro das semanas. Banco da reserva = dinheiro que você "não tem". Esse isolamento é a barreira psicológica mais eficaz que existe — mais do que qualquer planilha ou força de vontade.</div>
+    </div>
+  </div>
+
+  <div class="cartao-box" style="border-left:5px solid var(--azul)">
+    <div class="cartao-titulo" style="color:var(--azul)">🏛️ BANCO 1 — Caixa Econômica Federal (já tem) · Receber + Pagar</div>
+    <table>
+      <thead><tr><th>Entra</th><th>Sai (débito automático)</th></tr></thead>
+      <tbody>
+        <tr><td>✅ Salário Thácio (dia 20)</td><td>Financiamento do carro — R$ 1.795</td></tr>
+        <tr><td>✅ Repasse sogra (até dia 5)</td><td>Condomínio, luz, água, internet — R$ 750</td></tr>
+        <tr><td></td><td>Fatura cartão Caixa (dia 10) — ~R$ 4.000+</td></tr>
+        <tr><td></td><td>IPTU até encerrar — R$ 198</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;padding:9px 12px;background:var(--cinza-bg);border-radius:7px;font-size:.82rem;color:#555">
+      <strong>Regra:</strong> Logo após cair o salário, transferir o dinheiro das semanas para o banco operacional e a reserva para o banco da reserva. A CEF fica só com o necessário para os débitos automáticos e a fatura. <strong>Sem usar o cartão de débito da CEF para gastos correntes.</strong>
+    </div>
+  </div>
+
+  <div class="cartao-box" style="border-left:5px solid var(--verde)">
+    <div class="cartao-titulo" style="color:var(--verde)">💳 BANCO 2 — Conta Operacional Semanal · Gastos do dia a dia</div>
+    <div class="grid-2" style="margin-bottom:12px">
+      <div style="background:var(--verde-bg);border-radius:10px;padding:13px;border:1px solid #a8d5be">
+        <div style="font-weight:700;font-size:.88rem;margin-bottom:6px">🥇 Nubank — Recomendado</div>
+        <div style="font-size:.81rem;line-height:1.7;color:#333">
+          ✅ Sem tarifa · FGC R$ 250k<br>
+          ✅ Transferência automática agendável<br>
+          ✅ App categoriza gastos por semana<br>
+          ✅ Cartão débito — uso controlado<br>
+          ✅ Banco com licença plena do BCB<br>
+          ℹ️ Byanca já usa — abrir conta separada para o casal ou usar a dela como operacional conjunta
+        </div>
+      </div>
+      <div style="background:var(--azul-bg);border-radius:10px;padding:13px;border:1px solid #cde5f5">
+        <div style="font-weight:700;font-size:.88rem;margin-bottom:6px">🥈 Banco Inter — Alternativa</div>
+        <div style="font-size:.81rem;line-height:1.7;color:#333">
+          ✅ Sem tarifa · FGC R$ 250k<br>
+          ✅ Cashback 0,25–1% em categorias<br>
+          ✅ Cartão débito internacional<br>
+          ✅ Banco S.A. regulado pelo BCB<br>
+          ℹ️ App um pouco mais carregado que Nubank
+        </div>
+      </div>
+    </div>
+    <div style="padding:9px 12px;background:var(--cinza-bg);border-radius:7px;font-size:.82rem;color:#555">
+      <strong>Como funciona:</strong> No dia 20, Thácio transfere o valor das semanas (saldo livre ÷ semanas do mês) para esta conta. Todo gasto variável — supermercado, combustível, alimentação, fórum — sai daqui via débito. Quando o saldo da semana acabar: <strong>parou</strong>.
+    </div>
+  </div>
+
+  <div class="cartao-box" style="border-left:5px solid var(--roxo)">
+    <div class="cartao-titulo" style="color:var(--roxo)">🔒 BANCO 3 — Reserva de Emergência · Dinheiro que você "não tem"</div>
+    <div class="alerta roxo" style="margin-bottom:13px">
+      <div class="alerta-icon">🧠</div>
+      <div>
+        <div class="alerta-titulo">A psicologia do banco esquecido</div>
+        <div class="alerta-texto">Para funcionar, a reserva precisa de <strong>fricção de acesso</strong>. Sem cartão físico, sem app na tela inicial, nome intimidador na conta. Renomeie como <em>"🚨 EMERGÊNCIA — NÃO MEXER"</em> ou <em>"DINHEIRO DO DESEMPREGO"</em>. O objetivo é que resgatar pareça uma decisão grande, não um deslize.</div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-bottom:12px">
+      <div style="background:var(--roxo-bg);border-radius:10px;padding:13px;border:1px solid #d0b0f5">
+        <div style="font-weight:700;font-size:.88rem;margin-bottom:6px">🥇 Tesouro Direto — Tesouro Selic</div>
+        <div style="font-size:.81rem;line-height:1.7;color:#333">
+          ✅ <strong>Garantia do Governo Federal</strong> — a mais segura do Brasil<br>
+          ✅ Rende ~Selic (10,5% a.a.) — acima da poupança<br>
+          ✅ Liquidez D+1 (resgate em 1 dia útil)<br>
+          ✅ Aporte mínimo: R$ 30<br>
+          ✅ <strong>Sem cartão</strong> — acesso via site ou app Tesouro<br>
+          ✅ Acesse via BB (você já tem conta)<br>
+          ⚠️ IR regressivo: 22,5% no início, 15% após 2 anos<br>
+          <strong>🎯 Melhor opção — mais distante, mais segura</strong>
+        </div>
+      </div>
+      <div style="background:var(--verde-bg);border-radius:10px;padding:13px;border:1px solid #a8d5be">
+        <div style="font-weight:700;font-size:.88rem;margin-bottom:6px">🥈 Nubank — Caixinha dedicada</div>
+        <div style="font-size:.81rem;line-height:1.7;color:#333">
+          ✅ Rende 100% CDI (~10,5% a.a.) automático<br>
+          ✅ Caixinha nomeada: "🚨 EMERGÊNCIA"<br>
+          ✅ <strong>Sem cartão</strong> vinculado à caixinha<br>
+          ✅ Liquidez imediata<br>
+          ✅ FGC R$ 250k<br>
+          ⚠️ Byanca já usa Nubank — se for a mesma conta, cria tentação<br>
+          <strong>🎯 Boa opção se preferir praticidade</strong>
+        </div>
+      </div>
+    </div>
+    <div style="padding:9px 12px;background:var(--roxo-bg);border-radius:7px;font-size:.82rem;color:#4a1f6e">
+      <strong>Protocolo de saque:</strong> Só emergência real (desemprego, saúde grave, acidente). Antes de sacar, pergunte: <em>"Isso é emergência ou desejo?"</em> Se hesitar, não saca. O primeiro aporte chega este mês com os R$ 565,29 que sobram do repasse de Byanca.
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:6px">
+    <div class="card-title">📊 Fluxo do Dinheiro — Thácio, dia 20 de cada mês</div>
+    <table>
+      <thead><tr><th>Ordem</th><th>Ação</th><th class="right">Valor</th><th>Destino</th></tr></thead>
+      <tbody>
+        <tr><td class="negrito" style="color:var(--roxo)">1º</td><td>Reserva automática (1%)</td><td class="right">R$ 73</td><td>Tesouro Selic / Caixinha</td></tr>
+        <tr><td class="negrito" style="color:var(--verde)">2º</td><td>Transferência para conta das semanas</td><td class="right">R$ 600</td><td>Nubank / Inter operacional</td></tr>
+        <tr><td class="negrito" style="color:var(--azul)">3º</td><td>Débitos automáticos cobertos (CEF)</td><td class="right">R$ 2.545</td><td>Permanece na CEF</td></tr>
+        <tr><td class="negrito" style="color:var(--azul)">4º</td><td>Fatura cartão Caixa (vence dia 10)</td><td class="right">~R$ 4.000</td><td>Paga via CEF</td></tr>
+        <tr style="background:var(--verde-bg)"><td class="negrito">✅</td><td>CEF após tudo</td><td class="right" style="color:var(--verde);font-weight:700">~R$ 0–100</td><td>Margem de segurança</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════ TÁTICAS ══════════════════════ -->
+<div id="taticas" class="section">
+  <div class="sec-titulo">⚡ Táticas — Decisões que Mudam o Resultado</div>
+
+  <div class="alerta roxo">
+    <div class="alerta-icon">🎯</div>
+    <div>
+      <div class="alerta-titulo">Táticas não são motivação — são sistemas</div>
+      <div class="alerta-texto">Motivação oscila. Sistema não. Cada tática abaixo foi desenhada para funcionar <strong>sem depender de força de vontade</strong> — o dinheiro vai para onde precisa ir antes de você decidir gastar.</div>
+    </div>
+  </div>
+
+  <div class="regra obrigatorio">
+    <h3>⚡ TÁTICA 1 — Use os R$ 3.000 de Byanca como alavanca, não como folga</h3>
+    <p>Este mês é o único com esse dinheiro extra. A tentação é "respirar" — mas o custo de oportunidade é enorme.</p>
+    <ul>
+      <li><strong>R$ 1.557,96</strong> → Quitar as 2 últimas parcelas da Franquia agora. Libera R$ 779/mês a partir de maio.</li>
+      <li><strong>R$ 876,75</strong> → Quitar as 3 últimas do Intercooler. Libera R$ 292/mês a partir de maio.</li>
+      <li><strong>R$ 565,29</strong> → Primeiro aporte no Tesouro Selic. Já começa rendendo.</li>
+    </ul>
+    <div style="margin-top:8px;padding:8px 12px;background:var(--verde-bg);border-radius:6px;font-weight:700;color:#1a5c35;font-size:.86rem">
+      ✅ Efeito: R$ 1.071/mês liberados permanentemente a partir de maio/2026 — sem precisar esperar nem negociar.
+    </div>
+  </div>
+
+  <div class="regra obrigatorio">
+    <h3>⚡ TÁTICA 2 — Alterar vencimento para dia 10 esta semana</h3>
+    <ul>
+      <li>Ligar agora para a Caixa (0800 726 0101) e solicitar vencimento dia 10</li>
+      <li>No mês da transição: separar dinheiro para duas faturas (dia 5 + dia 10)</li>
+      <li>Nunca pagar o mínimo ou deixar entrar no rotativo — se a fatura vier pesada, revisar o controle semanal</li>
+    </ul>
+  </div>
+
+  <div class="regra obrigatorio">
+    <h3>⚡ TÁTICA 3 — Fórum: gasto profissional fixo, não lazer</h3>
+    <ul>
+      <li>R$ 60/semana (2 × R$ 30) = R$ 240/mês — deduzido do teto semanal antes de calcular o livre</li>
+      <li>Pago no débito do cartão Caixa — registra automaticamente na fatura</li>
+      <li>Semana sem fórum: R$ 60 economizados vão para a reserva — <strong>não viram novo gasto</strong></li>
+      <li>Pedir nota fiscal sempre que possível — pode ser despesa profissional dedutível</li>
+    </ul>
+  </div>
+
+  <div class="regra roxo-r">
+    <h3>💜 TÁTICA 4 — 3 barreiras físicas para a reserva não ser tocada</h3>
+    <ul>
+      <li><strong>Barreira 1:</strong> Nenhum cartão físico — não solicitar, ou cortar se mandarem</li>
+      <li><strong>Barreira 2:</strong> App fora da tela inicial do celular — ou apenas acesso via navegador</li>
+      <li><strong>Barreira 3:</strong> Nome intimidador — <em>"🚨 EMERGÊNCIA — NÃO MEXER"</em> ou <em>"DINHEIRO DO DESEMPREGO"</em></li>
+    </ul>
+  </div>
+
+  <div class="regra obrigatorio">
+    <h3>⚡ TÁTICA 5 — Transferência automática no dia do salário (antes de tudo)</h3>
+    <ul>
+      <li>Configurar agendamento no app CEF para o dia 20: R$ 73 para reserva + R$ 600 para conta semanal</li>
+      <li>A automação elimina a decisão — o dinheiro vai antes que você perceba</li>
+      <li>Byanca faz o mesmo no ~dia 8: R$ 41 para reserva</li>
+    </ul>
+  </div>
+
+  <div class="regra alerta-r">
+    <h3>⚠️ TÁTICA 6 — Dívidas de cartões cancelados: ação em 45 dias</h3>
+    <ul>
+      <li>Acessar <strong>registrato.bcb.gov.br</strong> — lista todas as dívidas em seu nome</li>
+      <li>Negociar via <strong>Serasa Limpa Nome</strong> — descontos de 40–70% à vista</li>
+      <li>Usar parte do caixa liberado em maio (R$ 779 da franquia) para quitar essas dívidas</li>
+      <li>Cada dívida quitada: +30 a 80 pontos no score em 30–60 dias</li>
+    </ul>
+  </div>
+
+  <div class="regra obrigatorio">
+    <h3>⚡ TÁTICA 7 — Escada de reserva: suba o percentual quando parcelas encerrarem</h3>
+    <table style="margin-top:8px">
+      <thead><tr><th>Quando</th><th>Evento gatilho</th><th>% reserva</th><th>Aporte mensal</th></tr></thead>
+      <tbody>
+        <tr><td>Mai/2026</td><td>Início do hábito</td><td><strong>1%</strong></td><td>~R$ 114/mês</td></tr>
+        <tr><td>Jun/2026</td><td>Franquia + Intercooler quitados</td><td><strong>3%</strong></td><td>~R$ 342/mês</td></tr>
+        <tr><td>Set/2026</td><td>Fred. exames + Mr Zoo encerrados</td><td><strong>5%</strong></td><td>~R$ 570/mês</td></tr>
+        <tr><td>Out/2026</td><td>Fred. internação + CrediMóveis encerrados</td><td><strong>8%</strong></td><td>~R$ 913/mês</td></tr>
+        <tr style="background:var(--verde-bg)"><td>Jan/2027</td><td>Computador encerrado</td><td><strong>10–12%</strong></td><td>~R$ 1.141/mês</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:9px;font-size:.82rem;color:#555">Reserva acumulada estimada em 12 meses: <strong>R$ 6.500 a R$ 8.000</strong> — sem sentir "perda", porque cada subida coincide com uma parcela encerrada.</div>
+  </div>
+
+  <div class="regra info-r">
+    <h3>📱 TÁTICA 8 — App gratuito de acompanhamento</h3>
+    <ul>
+      <li><strong>Mobills</strong> ou <strong>Organizze</strong> — integram com extrato do Nubank via open finance</li>
+      <li>5 categorias: Moradia, Transporte, Alimentação, Frederico, Pessoal</li>
+      <li>Ativar alerta quando chegar a 80% do envelope semanal</li>
+      <li>Tesouro Direto: acompanhar em <strong>tesourodireto.com.br</strong> — ver o dinheiro crescer reforça o hábito de poupar</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════ PERSPECTIVAS ══════════════════════ -->
+<div id="perspectivas" class="section">
+  <div class="sec-titulo">📈 Perspectivas — Evolução Mês a Mês</div>
+
+  <div class="alerta info">
+    <div class="alerta-icon">🔭</div>
+    <div>
+      <div class="alerta-titulo">Base de referência futura: Thácio R$ 7.000 + Byanca R$ 4.000</div>
+      <div class="alerta-texto">A perspectiva futura considera a base salarial sem o plano de saúde embutido na folha (bruto menor, mas sem o desconto do GEAP). Byanca mantém o repasse de R$ 3.000 — valor fixo e simples de gerenciar. Os 4 cenários mostram como o orçamento evolui à medida que as parcelas encerram.</div>
+    </div>
+  </div>
+
+  <!-- BARRA DE PROGRESSO VISUAL -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">📊 Trajetória do Comprometimento da Renda</div>
+    <div style="font-size:.83rem;color:#555;margin-bottom:14px">Meta: sair de 80% hoje para ≤ 45% em janeiro/2027</div>
+
+    <div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:4px">
+        <span style="font-weight:700">Abril/2026 — Hoje</span>
+        <span style="color:var(--vermelho);font-weight:700">80%</span>
+      </div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:80%;background:var(--vermelho)"></div></div>
+    </div>
+    <div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:4px">
+        <span style="font-weight:700">Junho/2026 — Franquia+Intercooler quitados</span>
+        <span style="color:var(--amarelo);font-weight:700">68%</span>
+      </div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:68%;background:var(--amarelo)"></div></div>
+    </div>
+    <div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:4px">
+        <span style="font-weight:700">Setembro/2026 — Base futura, parcelas reduzidas</span>
+        <span style="color:#c8900a;font-weight:700">58%</span>
+      </div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:58%;background:#c8900a"></div></div>
+    </div>
+    <div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:4px">
+        <span style="font-weight:700">Outubro/2026 — Fred internação + CrediMóveis encerrados</span>
+        <span style="color:var(--verde-claro);font-weight:700">49%</span>
+      </div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:49%;background:var(--verde-claro)"></div></div>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:4px">
+        <span style="font-weight:700">Janeiro/2027 — Todas as parcelas encerradas</span>
+        <span style="color:var(--verde);font-weight:700">45%</span>
+      </div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:45%;background:var(--verde)"></div></div>
+    </div>
+    <div style="margin-top:12px;font-size:.8rem;color:#888">🟢 Zona segura: ≤ 55% &nbsp;|&nbsp; 🟡 Atenção: 55–70% &nbsp;|&nbsp; 🔴 Crítico: &gt; 70%</div>
+  </div>
+
+  <!-- CENÁRIO ATUAL: ABRIL/2026 -->
+  <div class="card" style="margin-bottom:14px;border-top:4px solid var(--vermelho)">
+    <div class="card-title" style="color:var(--vermelho)">🔴 SITUAÇÃO ATUAL — Abril/2026</div>
+    <div class="grid-3" style="margin-bottom:10px">
+      <div><div style="font-size:.75rem;color:var(--cinza);font-weight:700;text-transform:uppercase">Total administrado</div><div style="font-size:1.3rem;font-weight:700">R$ 10.795</div></div>
+      <div><div style="font-size:.75rem;color:var(--cinza);font-weight:700;text-transform:uppercase">Total saídas</div><div style="font-size:1.3rem;font-weight:700;color:var(--vermelho)">R$ 8.690</div></div>
+      <div><div style="font-size:.75rem;color:var(--cinza);font-weight:700;text-transform:uppercase">Saldo disponível</div><div style="font-size:1.3rem;font-weight:700;color:var(--amarelo)">R$ 2.105</div></div>
+    </div>
+    <table>
+      <thead><tr><th>Componente</th><th class="right">Valor</th></tr></thead>
+      <tbody>
+        <tr><td>Thácio salário base</td><td class="right">R$ 7.310</td></tr>
+        <tr><td>Byanca repassa (contas conjuntas)</td><td class="right">R$ 3.000</td></tr>
+        <tr><td>Sogra repassa (plano saúde)</td><td class="right">R$ 485</td></tr>
+        <tr><td style="color:var(--vermelho)">(-) Fixos + parcelas + variáveis</td><td class="right" style="color:var(--vermelho)">- R$ 8.690</td></tr>
+        <tr style="background:var(--amarelo-bg)"><td class="negrito">Saldo / Comprometimento</td><td class="right negrito" style="color:var(--amarelo)">R$ 2.105 / 80%</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:9px;font-size:.81rem;color:#777">Byanca fica com R$ 1.100 pessoais (R$ 4.100 − R$ 3.000 repassados)</div>
+  </div>
+
+  <!-- CENÁRIO 1: JUNHO/2026 -->
+  <div class="card" style="margin-bottom:14px;border-top:4px solid var(--amarelo)">
+    <div class="card-title" style="color:var(--amarelo)">🟡 CENÁRIO 1 — Junho/2026 · Franquia + Intercooler quitados</div>
+    <div style="font-size:.83rem;color:#555;margin-bottom:10px;line-height:1.55">
+      Com o repasse de R$ 3.000 de Byanca usado estrategicamente agora, franquia e intercooler são quitados antecipadamente. Somam-se os ~12 itens que encerram naturalmente em maio. O IPTU também encerra. <strong>Base: ainda salário atual de Thácio.</strong>
+    </div>
+    <div class="grid-3" style="margin-bottom:10px">
+      <div><div style="font-size:.75rem;color:var(--cinza);font-weight:700;text-transform:uppercase">Total administrado</div><div style="font-size:1.3rem;font-weight:700">R$ 10.795</div></div>
+      <div><div style="font-size:.75rem;color:var(--cinza);font-weight:700;text-transform:uppercase">Total saídas</div><div style="font-size:1.3rem;font-weight:700;color:var(--amarelo)">R$ 6.457</div></div>
+      <div><div style="font-size:.75rem;color:var(--cinza);font-weight:700;text-transform:uppercase">Saldo disponível</div><div style="font-size:1.3rem;font-weight:700;color:var(--verde)">R$ 4.338</div></div>
+    </div>
+    <table>
+      <thead><tr><th>O que mudou</th><th class="right">Impacto mensal</th></tr></thead>
+      <tbody>
+        <tr><td>✅ Franquia quitada</td><td class="right" style="color:var(--verde)">+ R$ 779/mês</td></tr>
+        <tr><td>✅ Intercooler quitado</td><td class="right" style="color:var(--verde)">+ R$ 292/mês</td></tr>
+        <tr><td>✅ ~12 parcelas encerradas naturalmente (mai)</td><td class="right" style="color:var(--verde)">+ R$ 750/mês</td></tr>
+        <tr><td>✅ IPTU encerrado</td><td class="right" style="color:var(--verde)">+ R$ 198/mês</td></tr>
+        <tr style="background:var(--verde-bg)"><td class="negrito">Total liberado vs. hoje</td><td class="right negrito" style="color:var(--verde)">+ R$ 2.019/mês</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:9px;padding:9px 12px;background:var(--verde-bg);border-radius:8px;font-size:.82rem;color:#1a5c35">
+      <strong>Ação com o saldo extra:</strong> R$ 1.000 → amortizar CrediMóveis · R$ 500 → escalar reserva para 3% · R$ 500 → fundo fórum/lazer controlado
+    </div>
+  </div>
+
+  <!-- CENÁRIO 2: SETEMBRO/2026 -->
+  <div class="card" style="margin-bottom:14px;border-top:4px solid #c8900a">
+    <div class="card-title" style="color:#c8900a">🟠 CENÁRIO 2 — Setembro/2026 · Base futura + parcelas reduzidas</div>
+    <div style="font-size:.83rem;color:#555;margin-bottom:10px;line-height:1.55">
+      Base muda para <strong>Thácio R$ 7.000 + Byanca R$ 4.000</strong> (sem plano de saúde na folha). Mr. Zoo, roupas, pós-graduação e exames de Frederico encerram. Frederico internação ainda ativa por mais 2 meses.
+    </div>
+    <div class="grid-3" style="margin-bottom:10px">
+      <div><div style="font-size:.75rem;color:var(--cinza);font-weight:700;text-transform:uppercase">Total administrado</div><div style="font-size:1.3rem;font-weight:700">R$ 10.485</div><div style="font-size:.75rem;color:#888">R$ 7.000 + R$ 3.000 + R$ 485</div></div>
+      <div><div style="font-size:.75rem;color:var(--cinza);font-weight:700;text-transform:uppercase">Total saídas</div><div style="font-size:1.3rem;font-weight:700;color:#c8900a)">R$ 5.772</div></div>
+      <div><div style="font-size:.75rem;color:var(--cinza);font-weight:700;text-transform:uppercase">Saldo disponível</div><div style="font-size:1.3rem;font-weight:700;color:var(--verde)">R$ 4.713</div></div>
+    </div>
+    <table>
+      <thead><tr><th>Parcelas ainda ativas</th><th class="right">Valor/mês</th><th>Encerra</th></tr></thead>
+      <tbody>
+        <tr><td>CrediMóveis</td><td class="right">R$ 504,16</td><td><span class="tag amarelo">Out/2026</span></td></tr>
+        <tr><td>Computador</td><td class="right">R$ 309,90</td><td><span class="tag amarelo">Jan/2027</span></td></tr>
+        <tr><td>Frederico — internação</td><td class="right">R$ 450,00</td><td><span class="tag amarelo">Out/2026</span></td></tr>
+        <tr style="background:#f4f6f7"><td class="negrito">Total parcelas restantes</td><td class="right negrito" style="color:var(--amarelo)">R$ 1.264,06</td><td></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:9px;font-size:.81rem;color:#777">Byanca fica com R$ 1.000 pessoais · Comprometimento: 58% — dentro da zona de atenção, caminhando para segura</div>
+  </div>
+
+  <!-- CENÁRIO 3: OUTUBRO/2026 -->
+  <div class="card" style="margin-bottom:14px;border-top:4px solid var(--verde-claro)">
+    <div class="card-title" style="color:var(--verde)">🟢 CENÁRIO 3 — Outubro/2026 · Grande liberação</div>
+    <div style="font-size:.83rem;color:#555;margin-bottom:10px;line-height:1.55">
+      Frederico internação encerra (R$ 450 liberados). CrediMóveis encerra (R$ 504 liberados). <strong>R$ 954/mês de fôlego novo</strong>. Só o computador segue ativo por mais 3 meses.
+    </div>
+    <div class="grid-3" style="margin-bottom:10px">
+      <div><div style="font-size:.75rem;color:var(--cinza);font-weight:700;text-transform:uppercase">Total administrado</div><div style="font-size:1.3rem;font-weight:700">R$ 10.485</div></div>
+      <div><div style="font-size:.75rem;color:var(--cinza);font-weight:700;text-transform:uppercase">Total saídas</div><div style="font-size:1.3rem;font-weight:700;color:var(--verde-claro)">R$ 4.818</div></div>
+      <div><div style="font-size:.75rem;color:var(--cinza);font-weight:700;text-transform:uppercase">Saldo disponível</div><div style="font-size:1.3rem;font-weight:700;color:var(--verde)">R$ 5.667</div></div>
+    </div>
+    <div style="padding:9px 12px;background:var(--verde-bg);border-radius:8px;font-size:.83rem;color:#1a5c35">
+      <strong>Comprometimento: 49%</strong> — pela primeira vez abaixo de 50%. O casal está na zona segura. Ações recomendadas: escalar reserva para 8% · Criar fundo veterinário Frederico (R$ 200/mês) · Verificar renegociação do financiamento do carro (score já em recuperação).
+    </div>
+  </div>
+
+  <!-- CENÁRIO 4: JANEIRO/2027 — ESTABILIZAÇÃO -->
+  <div class="card" style="margin-bottom:16px;border-top:4px solid var(--verde)">
+    <div class="card-title" style="color:var(--verde)">✅ CENÁRIO 4 — Janeiro/2027 · Estabilização completa</div>
+    <div style="font-size:.83rem;color:#555;margin-bottom:10px;line-height:1.55">
+      Computador encerra. <strong>Nenhuma parcela ativa.</strong> O orçamento chega ao estado que deveria ser a norma: fixos + alimentação + fórum + Frederico manutenção. Tudo o que entra além disso é reserva, investimento ou qualidade de vida planejada.
+    </div>
+    <div class="grid-3" style="margin-bottom:10px">
+      <div><div style="font-size:.75rem;color:var(--cinza);font-weight:700;text-transform:uppercase">Total administrado</div><div style="font-size:1.3rem;font-weight:700">R$ 10.485</div></div>
+      <div><div style="font-size:.75rem;color:var(--cinza);font-weight:700;text-transform:uppercase">Total saídas</div><div style="font-size:1.3rem;font-weight:700;color:var(--verde)">R$ 4.508</div></div>
+      <div><div style="font-size:.75rem;color:var(--cinza);font-weight:700;text-transform:uppercase">Saldo disponível</div><div style="font-size:1.3rem;font-weight:700;color:var(--verde)">R$ 5.977</div></div>
+    </div>
+    <table>
+      <thead><tr><th>Saídas fixas permanentes</th><th class="right">Valor</th></tr></thead>
+      <tbody>
+        <tr><td>Financiamento do carro</td><td class="right">R$ 1.795,15</td></tr>
+        <tr><td>Condomínio + Luz + Água + Internet</td><td class="right">R$ 750,00</td></tr>
+        <tr><td>Frederico manutenção (ração + recorrente)</td><td class="right">R$ 250,00</td></tr>
+        <tr><td>Assinaturas</td><td class="right">R$ 220,70</td></tr>
+        <tr><td>Alimentação (supermercado + fora)</td><td class="right">R$ 1.100,00</td></tr>
+        <tr><td>Combustível</td><td class="right">R$ 350,00</td></tr>
+        <tr><td>Almoço fórum</td><td class="right">R$ 240,00</td></tr>
+        <tr style="background:var(--verde-bg)"><td class="negrito">TOTAL SAÍDAS FIXAS</td><td class="right negrito" style="color:var(--verde)">R$ 4.705,85</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;padding:11px 14px;background:var(--verde-bg);border-radius:8px;font-size:.84rem;color:#1a5c35">
+      <strong>Comprometimento: 45%</strong> — zona verde consolidada. Com saldo de ~R$ 5.977, a distribuição ideal é: <strong>10–12% em reserva/investimentos</strong> (R$ 1.049–1.258) · fundo veterinário R$ 200 · lazer planejado R$ 800 · margem pessoal Thácio R$ 500 · restante (<strong>~R$ 3.000+</strong>) como folga real para objetivos do casal.
+    </div>
+  </div>
+
+  <!-- TABELA RESUMO COMPARATIVA -->
+  <div class="card">
+    <div class="card-title">📋 Comparativo Resumido — Todos os Cenários</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Período</th>
+          <th class="right">Administrado</th>
+          <th class="right">Saídas</th>
+          <th class="right">Saldo</th>
+          <th class="right">Comprometimento</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="negrito">Abril/2026 (hoje)</td><td class="right">R$ 10.795</td><td class="right">R$ 8.690</td><td class="right" style="color:var(--amarelo)">R$ 2.105</td><td class="right">80%</td><td><span class="tag vermelho">Crítico</span></td></tr>
+        <tr><td class="negrito">Junho/2026</td><td class="right">R$ 10.795</td><td class="right">R$ 6.457</td><td class="right" style="color:var(--verde)">R$ 4.338</td><td class="right">68% ↓</td><td><span class="tag amarelo">Atenção</span></td></tr>
+        <tr><td class="negrito">Setembro/2026</td><td class="right">R$ 10.485</td><td class="right">R$ 5.772</td><td class="right" style="color:var(--verde)">R$ 4.713</td><td class="right">58% ↓</td><td><span class="tag amarelo">Atenção</span></td></tr>
+        <tr><td class="negrito">Outubro/2026</td><td class="right">R$ 10.485</td><td class="right">R$ 4.818</td><td class="right" style="color:var(--verde)">R$ 5.667</td><td class="right">49% ↓</td><td><span class="tag verde">Seguro</span></td></tr>
+        <tr style="background:var(--verde-bg)"><td class="negrito">Janeiro/2027</td><td class="right">R$ 10.485</td><td class="right">R$ 4.508</td><td class="right" style="color:var(--verde);font-weight:700">R$ 5.977</td><td class="right" style="color:var(--verde);font-weight:700">45% ↓</td><td><span class="tag verde">Estável</span></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;font-size:.8rem;color:#888">Cenários a partir de set/2026 usam base futura: Thácio R$ 7.000 + Byanca R$ 4.000 + sogra R$ 485. Byanca mantém repasse de R$ 3.000 e fica com R$ 1.000 pessoais.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════ PARCELAS ══════════════════════ -->
+<div id="parcelas" class="section">
+  <div class="sec-titulo">📋 Mapa de Parcelas Ativas</div>
+  <div class="alerta info">
+    <div class="alerta-icon">🎯</div>
+    <div>
+      <div class="alerta-titulo">Estratégia: Avalanche por Liberação de Fluxo</div>
+      <div class="alerta-texto">Amortizar antecipado as parcelas que <strong>liberam mais caixa por mês</strong>: Franquia (R$ 779) e Intercooler (R$ 292) primeiro. Em maio/2026, encerram ~12 itens espontaneamente → R$ 750 liberados. Esse dinheiro vai imediatamente para amortizar CrediMóveis ou Computador — nunca para novos gastos.</div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">🔴 Alta prioridade</div>
+    <table>
+      <thead><tr><th>Item</th><th class="right">Parcela</th><th class="right">Restam</th><th class="right">Total rest.</th><th>Ação</th></tr></thead>
+      <tbody>
+        <tr><td class="negrito">Franquia</td><td class="right">R$ 778,98</td><td class="right">2x</td><td class="right" style="color:var(--vermelho)">R$ 1.557,96</td><td><span class="tag vermelho">Amortizar já</span></td></tr>
+        <tr><td class="negrito">Intercooler carro</td><td class="right">R$ 292,25</td><td class="right">3x</td><td class="right">R$ 876,75</td><td><span class="tag vermelho">Amortizar</span></td></tr>
+        <tr><td class="negrito">Frederico — internação</td><td class="right">R$ 450,00</td><td class="right">8x</td><td class="right">R$ 3.600,00</td><td><span class="tag amarelo">Manter 50/50</span></td></tr>
+        <tr><td class="negrito">CrediMóveis (3 itens)</td><td class="right">R$ 504,16</td><td class="right">4x</td><td class="right">R$ 2.016,64</td><td><span class="tag amarelo">Monitorar</span></td></tr>
+        <tr><td class="negrito">Computador</td><td class="right">R$ 309,90</td><td class="right">7x</td><td class="right">R$ 2.169,30</td><td><span class="tag amarelo">Monitorar</span></td></tr>
+        <tr><td class="negrito">Localiza</td><td class="right">R$ 349,65</td><td class="right">1x</td><td class="right">R$ 349,65</td><td><span class="tag quase">Última</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">🟡 Encerram em 1–6 meses</div>
+    <table>
+      <thead><tr><th>Item</th><th class="right">Parcela</th><th class="right">Restam</th><th>Encerra</th></tr></thead>
+      <tbody>
+        <tr><td>Frederico exames</td><td class="right">R$ 121,75</td><td class="right">5x</td><td><span class="tag amarelo">set/26</span></td></tr>
+        <tr><td>Mr. Zoo</td><td class="right">R$ 170,00</td><td class="right">3x</td><td><span class="tag amarelo">jul/26</span></td></tr>
+        <tr><td>Roupas (Gab)</td><td class="right">R$ 80,00</td><td class="right">5x</td><td><span class="tag amarelo">set/26</span></td></tr>
+        <tr><td>Pós-graduação</td><td class="right">R$ 81,06</td><td class="right">4x</td><td><span class="tag verde">ago/26</span></td></tr>
+        <tr><td>IPTU</td><td class="right">R$ 198,00</td><td class="right">3x</td><td><span class="tag cinza">jun/26</span></td></tr>
+        <tr><td>Gocase</td><td class="right">R$ 122,24</td><td class="right">2x</td><td><span class="tag cinza">mai/26</span></td></tr>
+        <tr><td>Centauro / Meu Remédio / Avatim / Filtro / Shampoo / Zee Now / Petz / Atalaia / Básico / Kalunga / Liquidificador</td><td class="right">var.</td><td class="right">1–3x</td><td><span class="tag quase">mai–jul/26</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">✅ Quitadas este mês</div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;padding:4px 0">
+      <span class="chip urgente">Apple Watch ✓</span>
+      <span class="chip urgente">Garantia carro ✓</span>
+      <span class="chip urgente">Presente Byanca ✓</span>
+    </div>
+    <div style="margin-top:12px;padding:11px;background:var(--verde-bg);border-radius:8px;font-size:.83rem;color:#1a5c35">
+      <strong>Regra inegociável:</strong> cada parcela quitada → o valor vai para reserva ou amortização na mesma semana. Não espera "acumular no saldo".
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ REGRAS ══════════════════════ -->
+<div id="regras" class="section">
+  <div class="sec-titulo">🏦 Regras Bancárias e de Crédito</div>
+  <div class="regra obrigatorio">
+    <h3>✅ REGRA 1 — Máximo 2 bancos por pessoa</h3>
+    <ul>
+      <li><strong>Thácio:</strong> CEF (principal, salário, débitos automáticos) + Nubank (reserva de emergência). Encerrar Bradesco após resolução do sinistro. Renegociar dívida Itaú via Serasa Limpa Nome.</li>
+      <li><strong>Byanca:</strong> Nubank (principal, cartão pessoal) + CEF (FGTS). Encerrar BB se não houver vínculo obrigatório.</li>
+      <li><strong>Conta conjunta operacional:</strong> Nubank ou Inter (sem tarifa) — só para gastos do casal.</li>
+    </ul>
+  </div>
+  <div class="regra obrigatorio">
+    <h3>✅ REGRA 2 — Um cartão por pessoa + vencimento ajustado</h3>
+    <ul>
+      <li>Thácio: cartão CEF, vencimento dia 5 ou 10. Limite: R$ 2.500.</li>
+      <li>Byanca: cartão Nubank, vencimento dia 20. Limite: R$ 1.500.</li>
+      <li>Sem novos parcelamentos acima de 3x por 8 meses.</li>
+    </ul>
+  </div>
+  <div class="regra roxo-r">
+    <h3>💜 REGRA 3 — Método da Reserva Progressiva (o hábito primeiro)</h3>
+    <ul>
+      <li>Começar com 1% (Thácio R$ 73 + Byanca R$ 41 = R$ 114/mês) — transferência automática no dia do salário</li>
+      <li>Em junho/2026 (quando franquia e intercooler encerrarem), subir para 3%</li>
+      <li>Em outubro/2026 (Frederico pago), subir para 5–10%</li>
+      <li>A reserva vai para conta Nubank/Inter com rendimento automático — <strong>não é conta corrente, não tem cartão</strong></li>
+    </ul>
+  </div>
+  <div class="regra proibido">
+    <h3>🚫 REGRA 4 — Proibições durante o plano (8 meses)</h3>
+    <ul>
+      <li>Nenhum novo parcelamento acima de 3x para itens não-essenciais</li>
+      <li>Sem novas linhas de crédito (empréstimo, crédito consignado para consumo)</li>
+      <li>Sem uso de cheque especial — sinal de alerta crítico</li>
+      <li>Compra acima de R$ 150: esperar 48h e consultar o teto semanal do orçamento</li>
+      <li>iFood/Delivery: máximo R$ 120/mês — dentro do envelope de alimentação fora</li>
+    </ul>
+  </div>
+  <div class="regra alerta-r">
+    <h3>⚠️ REGRA 5 — Bradesco e dívidas de cartões cancelados: ação em 30 dias</h3>
+    <p>Consultar Registrato (BCB) para listar todas as dívidas. Renegociar Itaú/Bradesco via Serasa Limpa Nome (normalmente 40–60% de desconto à vista). Registrar reclamação do sinistro Bradesco no Procon e BCB. Isso é a ação de maior impacto no score de crédito.</p>
+  </div>
+  <div class="regra obrigatorio">
+    <h3>✅ REGRA 6 — Ritual semanal (segunda-feira, 5 minutos)</h3>
+    <ul>
+      <li>Abrir o controle semanal (aba acima) e registrar os gastos da semana anterior</li>
+      <li>Verificar se cada envelope fechou dentro do teto</li>
+      <li>Nenhum gasto acima de R$ 200 sem comunicar ao parceiro</li>
+      <li>Reunião do casal todo dia 1º: fechar o mês, registrar parcelas encerradas, planejar o próximo</li>
+    </ul>
+  </div>
+  <div class="regra alerta-r">
+    <h3>⚠️ REGRA 7 — Franquia: decisão em 30 dias</h3>
+    <p>Restam 2 parcelas de R$ 779 = R$ 1.558. Pergunta objetiva: a franquia gerou receita nos últimos 60 dias? Se não, conversar com o franqueador sobre encerramento antes de pagar as últimas parcelas sem retorno.</p>
+  </div>
+  <div class="regra obrigatorio">
+    <h3>✅ REGRA 8 — Repasse da sogra: dia 5 inegociável</h3>
+    <p>Os R$ 485 mensais do plano de saúde devem cair na conta de Thácio até o dia 5. Sugestão: configurar lembrete automático para a mãe de Byanca e para Thácio verificar. Atraso compromete o cálculo do saldo da semana 1.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════ CRONOGRAMA ══════════════════════ -->
+<div id="cronograma" class="section">
+  <div class="sec-titulo">📅 Cronograma de Recuperação — 12 Meses</div>
+  <div class="grid-2" style="margin-bottom:20px">
+    <div class="card verde">
+      <div class="card-title">🎯 Meta 6 meses</div>
+      <div class="card-value" style="color:var(--verde);font-size:1.1rem">Comprometimento ≤ 60%</div>
+      <div class="card-sub">Franquia, intercooler e 15 parcelas encerradas. Reserva R$ 2.500+</div>
+    </div>
+    <div class="card azul">
+      <div class="card-title">🏆 Meta 12 meses</div>
+      <div class="card-value" style="color:var(--azul);font-size:1.1rem">Score 700+ · Reserva R$ 6.000+</div>
+      <div class="card-sub">Frederico pago, crédito recuperado, método semanal automático</div>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-mes">📌 ABRIL/2026 — Esta semana</div>
+      <div class="tl-card">
+        1. Ajustar vencimento cartão Thácio → dia 5 ou 10<br>
+        2. Ajustar vencimento Nubank Byanca → dia 20<br>
+        3. Configurar reserva automática de 1% no dia do salário<br>
+        4. Consultar Registrato (BCB) — mapear dívidas de cartões cancelados<br>
+        5. Registrar reclamação Bradesco (Procon + Ouvidoria BCB)<br>
+        6. Combinar com sogra o repasse de R$ 485 até dia 5 de cada mês<br>
+        7. Começar a usar o controle semanal desta semana
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-mes">🔧 MAIO/2026 — ~R$ 750 liberados</div>
+      <div class="tl-card">
+        ~12 parcelas encerram (Centauro, Meu Remédio, Avatim, Filtro, Shampoo, Zee Now, Petz, Atalaia, Localiza, Básico, Kalunga, Gocase)<br>
+        → R$ 750 liberados vão <strong>imediatamente</strong> para amortizar Intercooler (R$ 292) + Franquia (R$ 779)<br>
+        → Reserva acumulada: R$ 228 (1%) ou R$ 1.140 (5%)
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-mes">📊 JUNHO/2026 — Grande alívio</div>
+      <div class="tl-card">
+        Franquia encerrada (R$ 779 liberados) · IPTU encerrado (R$ 198 liberados)<br>
+        Total liberado: ~R$ 1.270/mês a mais de caixa<br>
+        → Subir reserva para 3% · Amortizar Intercooler se ainda ativo<br>
+        → Renegociar dívidas de cartões cancelados com o dinheiro liberado
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-mes">📈 JULHO–AGOSTO/2026</div>
+      <div class="tl-card">
+        Mr. Zoo encerrado · Liquidificador encerrado<br>
+        → Direcionar para amortização antecipada do CrediMóveis<br>
+        → Reserva: ~R$ 3.500 acumulados · Score em recuperação visível
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-mes">🐾 SETEMBRO/2026 — Frederico quase livre</div>
+      <div class="tl-card">
+        Exames + Roupas + Pós-graduação encerram<br>
+        → Criar fundo veterinário: R$ 200/mês separado<br>
+        → Reserva: R$ 5.000+ · Score: 650–680 estimado
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-mes">🏆 OUTUBRO–DEZEMBRO/2026</div>
+      <div class="tl-card">
+        Frederico internação encerrada (R$ 450 liberados) · CrediMóveis encerrado (R$ 504 liberados)<br>
+        → Comprometimento da renda: ~50%<br>
+        → Score: 700+ · Reserva: R$ 6.500+<br>
+        → Subir reserva para 5–10% · Iniciar planejamento de investimentos simples (Tesouro Selic)
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--azul-claro);box-shadow:0 0 0 2px var(--azul-claro)"></div>
+      <div class="tl-mes" style="color:var(--azul-claro)">🎯 JANEIRO–ABRIL/2027 — Novo ciclo</div>
+      <div class="tl-card">
+        Computador encerrado · Comprometimento ~42%<br>
+        → Método semanal automático, sem esforço<br>
+        → Renegociar financiamento do carro (score alto = taxa menor)<br>
+        → <strong>Casal financeiramente estável. Próximo objetivo: planejado com calma.</strong>
+      </div>
+    </div>
+  </div>
+  <div class="alerta ok" style="margin-top:20px">
+    <div class="alerta-icon">💬</div>
+    <div>
+      <div class="alerta-titulo">Conclusão técnica</div>
+      <div class="alerta-texto">O método semanal não é teoria: é o único sistema que funciona quando o comprometimento está acima de 80%, porque elimina a ilusão do "saldo no início do mês". Começa com 1% de reserva — não porque é muito, mas porque <strong>o hábito precisa ser construído antes do valor</strong>. Em outubro/2026, quando as grandes parcelas encerrarem, elevar para 5% vai parecer natural porque o comportamento já estará instalado. O casal tem renda sólida. O problema sempre foi gestão — e isso tem solução técnica.</div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  Thácio R$ 7.310 · Byanca R$ 4.100 · Frederico 50/50 · Proporção conjunta 64/36 · Atualizado abr/2026
+</footer>
+
+<script>
+  // NAV
+  function go(id, btn) {
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // CALCULADORA SEMANAL THÁCIO
+  function calcSemanal() {
+    const pct = parseFloat(document.getElementById('pct-t').value);
+    const sem = parseFloat(document.getElementById('sem-t').value);
+    const saldo = 673.02;          // saldo livre Thácio após todas as saídas
+    const forum = 60;              // almoço fórum fixo por semana
+    const reserva = 7310.10 * (pct / 100);
+    const livre = saldo - reserva;
+    const semanal_bruto = livre / sem;
+    const semanal_liquido = semanal_bruto - forum; // descontando o fórum
+    document.getElementById('resultado-t').textContent =
+      `→ Reserva: R$ ${reserva.toFixed(2).replace('.',',')} · Bruto/semana: R$ ${Math.max(0,semanal_bruto).toFixed(2).replace('.',',')} · Livre após fórum: R$ ${Math.max(0,semanal_liquido).toFixed(2).replace('.',',')}`;
+    const detEl = document.getElementById('detalhe-t');
+    if(detEl) detEl.innerHTML = `<span style="color:var(--amarelo)">⚠️ R$ ${forum} do fórum já descontados do teto</span> · O que a calculadora mostra como "livre" é o que você tem para <strong>tudo mais além do fórum</strong>.`;
+    // atualizar cards de semana
+    ['sw1t','sw2t','sw3t','sw4t'].forEach((id,i) => {
+      const el = document.getElementById(id);
+      if(el) {
+        if(i < sem) {
+          el.textContent = `R$ ${Math.max(0,semanal_liquido).toFixed(0)}`;
+          el.title = `Bruto R$ ${semanal_bruto.toFixed(0)} − fórum R$ ${forum} = livre R$ ${Math.max(0,semanal_liquido).toFixed(0)}`;
+        } else { el.textContent = '—'; }
+      }
+    });
+  }
+  window.addEventListener('load', calcSemanal);
+
+  // CONTROLE SEMANAL
+  function calcRow(input, teto, key) {
+    const gasto = parseFloat(input.value)||0;
+    const t = parseFloat(teto);
+    const saldo = t - gasto;
+    const pct = Math.min(100, Math.round((gasto/t)*100));
+    document.getElementById('saldo-'+key).textContent = 'R$ '+saldo.toFixed(2).replace('.',',');
+    document.getElementById('saldo-'+key).style.color = saldo < 0 ? 'var(--vermelho)' : saldo < t*0.2 ? 'var(--amarelo)' : 'var(--verde)';
+    document.getElementById('pct-'+key).textContent = pct+'%';
+    const statusEl = document.getElementById('status-'+key);
+    if(gasto > t) statusEl.innerHTML = '<span class="tag vermelho">EXCEDEU</span>';
+    else if(gasto > t*0.8) statusEl.innerHTML = '<span class="tag amarelo">ATENÇÃO</span>';
+    else statusEl.innerHTML = '<span class="tag verde">OK</span>';
+    atualizaTotalConjunto();
+  }
+
+  function atualizaTotalConjunto() {
+    const ids = ['inp-super','inp-alim','inp-comb','inp-fred','inp-casa'];
+    const total = ids.reduce((s,id)=>s+(parseFloat(document.getElementById(id).value)||0),0);
+    document.getElementById('total-conjunto').textContent = 'R$ '+total.toFixed(2).replace('.',',');
+  }
+
+  function calcPessoal(pessoa) {
+    const teto = parseFloat(document.getElementById('teto-'+pessoa[0]).value)||0;
+    const ids = pessoa === 'thacio' ? ['t1','t2','t3','t4','t5'] : ['b1','b2','b3','b4','b5'];
+    const total = ids.reduce((s,id)=>s+(parseFloat(document.getElementById(id).value)||0),0);
+    const saldo = teto - total;
+    const totalId = 'total-'+pessoa+'-pessoal';
+    const saldoId = 'saldo-'+pessoa[0]+'-pessoal';
+    document.getElementById(totalId).textContent = 'R$ '+total.toFixed(2).replace('.',',');
+    const saldoEl = document.getElementById(saldoId);
+    saldoEl.textContent = 'R$ '+saldo.toFixed(2).replace('.',',');
+    saldoEl.className = saldo < 0 ? 'negrito ctrl-saldo-neg' : saldo < teto*0.15 ? 'negrito' : 'negrito ctrl-saldo-pos';
+    saldoEl.style.color = saldo < 0 ? 'var(--vermelho)' : saldo < teto*0.15 ? 'var(--amarelo)' : 'var(--verde)';
+  }
+
+  function atualizaControle() {
+    const tt = document.getElementById('teto-thacio').value;
+    const tb = document.getElementById('teto-byanca').value;
+    document.getElementById('teto-t-display').textContent = 'R$ '+parseFloat(tt).toFixed(2).replace('.',',');
+    document.getElementById('teto-b-display').textContent = 'R$ '+parseFloat(tb).toFixed(2).replace('.',',');
+    calcPessoal('thacio');
+    calcPessoal('byanca');
+  }
+
+  function limparControle() {
+    ['inp-super','inp-alim','inp-comb','inp-fred','inp-casa','t1','t2','t3','t4','t5','b1','b2','b3','b4','b5'].forEach(id=>{
+      const el = document.getElementById(id); if(el) el.value='';
+    });
+    ['t1n','t2n','t3n','t4n','t5n','b1n','b2n','b3n','b4n','b5n'].forEach(id=>{
+      const el = document.getElementById(id); if(el) el.value='';
+    });
+    ['super','alim','comb','fred','casa'].forEach(k=>{
+      const t = k==='super'?175:k==='alim'?100:k==='comb'?88:k==='fred'?63:60;
+      document.getElementById('saldo-'+k).textContent='R$ '+t;
+      document.getElementById('saldo-'+k).style.color='var(--verde)';
+      document.getElementById('pct-'+k).textContent='0%';
+      document.getElementById('status-'+k).innerHTML='<span class="tag verde">OK</span>';
+    });
+    document.getElementById('total-conjunto').textContent='R$ 0,00';
+    calcPessoal('thacio'); calcPessoal('byanca');
+    document.getElementById('resumo-semana').textContent='Preencha os campos acima para ver o resumo automático.';
+  }
+
+  function gerarResumo() {
+    const semana = document.getElementById('semana-ref').value;
+    const tt = parseFloat(document.getElementById('teto-thacio').value)||150;
+    const tb = parseFloat(document.getElementById('teto-byanca').value)||254;
+    const tids = ['t1','t2','t3','t4','t5'];
+    const bids = ['b1','b2','b3','b4','b5'];
+    const totT = tids.reduce((s,id)=>s+(parseFloat(document.getElementById(id).value)||0),0);
+    const totB = bids.reduce((s,id)=>s+(parseFloat(document.getElementById(id).value)||0),0);
+    const conjuntos = ['inp-super','inp-alim','inp-comb','inp-fred','inp-casa'];
+    const totC = conjuntos.reduce((s,id)=>s+(parseFloat(document.getElementById(id).value)||0),0);
+    const saldoT = tt - totT;
+    const saldoB = tb - totB;
+    const icon = (v,t) => v > t ? '🔴' : v > t*0.8 ? '🟡' : '🟢';
+
+    document.getElementById('resumo-semana').innerHTML = `
+      <strong>${semana}</strong><br>
+      ${icon(totC,486)} Gastos conjuntos: <strong>R$ ${totC.toFixed(2).replace('.',',')}</strong> de R$ 486 (teto conjunto)<br>
+      ${icon(totT,tt)} Thácio pessoal: <strong>R$ ${totT.toFixed(2).replace('.',',')}</strong> — Saldo: <span style="color:${saldoT<0?'var(--vermelho)':'var(--verde)'};font-weight:700">R$ ${saldoT.toFixed(2).replace('.',',')}</span><br>
+      ${icon(totB,tb)} Byanca pessoal: <strong>R$ ${totB.toFixed(2).replace('.',',')}</strong> — Saldo: <span style="color:${saldoB<0?'var(--vermelho)':'var(--verde)'};font-weight:700">R$ ${saldoB.toFixed(2).replace('.',',')}</span><br>
+      <span style="color:${(saldoT+saldoB)>=0?'var(--verde)':'var(--vermelho)'}"><strong>${(saldoT+saldoB)>=0?'✅ Semana dentro do orçamento':'⚠️ Semana com extrapolação — ajustar semana seguinte'}</strong></span>
+    `;
+  }
+
+  function imprimirSemana() { window.print(); }
+</script>
+</body>
+</html>
